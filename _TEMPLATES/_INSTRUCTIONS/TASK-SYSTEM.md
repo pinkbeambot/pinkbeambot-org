@@ -143,20 +143,25 @@ The Work Log is **chronological** — oldest at top, newest at bottom. **Always 
 - Easy to see progression over time
 - Prevents confusion about when things happened
 
-**CORRECT — Newest at bottom:**
+**CORRECT — Newest at bottom with full timestamp:**
 ```markdown
 ## 📝 Work Log
 
-### [2026-02-07 10:00] @CEO — Task Activated
+### 2026-02-07 10:00 @CEO — Task Activated
 - Lock acquired
 - Task activated from queue
 
-### [2026-02-07 11:00] @ENG-FE — Phase 1 Complete  ← OLDER
+### 2026-02-07 11:30 @ENG-FE — Phase 1 Complete  ← OLDER
 - Completed hero copy
 
-### [2026-02-07 12:00] @ENG-FE — Phase 2 Complete  ← NEWEST (just added)
+### 2026-02-07 12:45 @ENG-FE — Phase 2 Complete  ← NEWEST (just added)
 - Completed FAQ expansion
 ```
+
+**Timestamp format:** `YYYY-MM-DD HH:MM` (e.g., `2026-02-07 14:30`)
+- Include hours and minutes for minute-stale work tracking
+- Use 24-hour format for consistency
+- Separate date and time with a space
 
 **❌ WRONG — Do NOT put newest at top:**
 ```markdown
@@ -184,9 +189,9 @@ The Work Log is **chronological** — oldest at top, newest at bottom. **Always 
 3. Find the LAST entry (most recent timestamp)
 4. Add your new entry AFTER it
 
-**Format for each log entry:**
+**Format for each log entry (use full timestamp):**
 ```markdown
-### [YYYY-MM-DD HH:mm] @YourRole
+### YYYY-MM-DD HH:MM @YourRole
 **Progress:** What you did
 **Completed:** What got finished (checkboxes)
 **Todos:** What's next
@@ -195,6 +200,10 @@ The Work Log is **chronological** — oldest at top, newest at bottom. **Always 
 - If technical blocker → Tag relevant person with @mention
 **Notes:** Additional context
 ```
+
+**Timestamp format:** `YYYY-MM-DD HH:MM` (e.g., `2026-02-07 14:30`)
+- Include hours and minutes for minute-stale work tracking
+- Use 24-hour format for consistency
 
 **Remember: Scroll to bottom → Find last entry → Add after it.**
 

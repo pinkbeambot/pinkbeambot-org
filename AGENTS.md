@@ -234,19 +234,19 @@ Understand:
 
 The Work Log is **chronological** — oldest at top, newest at bottom. New entries go **AFTER** all existing entries.
 
-**CORRECT — Append at bottom:**
+**CORRECT — Append at bottom with full timestamp:**
 ```markdown
 ## 📝 Work Log
 
-### 2026-02-07 [[Org Chart/CEO/IDENTITY]] — Task Activated  ← OLD ENTRY (top)
+### 2026-02-07 10:00 [[Org Chart/CEO/IDENTITY]] — Task Activated  ← OLD ENTRY (top)
 - Lock acquired
 - Task activated from queue
 
-### 2026-02-07 [[Org Chart/ENG-FE/IDENTITY]] — Phase 1 Complete  ← OLD ENTRY
+### 2026-02-07 11:30 [[Org Chart/ENG-FE/IDENTITY]] — Phase 1 Complete  ← OLD ENTRY
 - Completed hero copy
 - Ready for review
 
-### 2026-02-07 [[Org Chart/ENG-FE/IDENTITY]] — Phase 2 Complete  ← NEW ENTRY (bottom)
+### 2026-02-07 12:45 [[Org Chart/ENG-FE/IDENTITY]] — Phase 2 Complete  ← NEW ENTRY (bottom)
 **Completed:**
 - [x] FAQ expansion
 - [x] Testimonials section
@@ -256,22 +256,22 @@ The Work Log is **chronological** — oldest at top, newest at bottom. New entri
 ```markdown
 ## 📝 Work Log
 
-### 2026-02-07 [[Org Chart/ENG-FE/IDENTITY]] — Phase 2 Complete  ← ❌ WRONG! Newest at top!
+### 2026-02-07 12:45 [[Org Chart/ENG-FE/IDENTITY]] — Phase 2 Complete  ← ❌ WRONG! Newest at top!
 **Completed:**
 - [x] FAQ expansion
 
-### 2026-02-07 [[Org Chart/CEO/IDENTITY]] — Task Activated  ← This should be at top (oldest)
+### 2026-02-07 10:00 [[Org Chart/CEO/IDENTITY]] — Task Activated  ← This should be at top (oldest)
 ```
 
 **❌ WRONG — Do NOT insert in middle:**
 ```markdown
 ## 📝 Work Log
 
-### 2026-02-07 [[Org Chart/CEO/IDENTITY]] — Task Activated
+### 2026-02-07 10:00 [[Org Chart/CEO/IDENTITY]] — Task Activated
 
-### 2026-02-07 [[Org Chart/ENG-FE/IDENTITY]] — Phase 2 Complete  ← ❌ WRONG! Inserted in middle!
+### 2026-02-07 12:45 [[Org Chart/ENG-FE/IDENTITY]] — Phase 2 Complete  ← ❌ WRONG! Inserted in middle!
 
-### 2026-02-07 [[Org Chart/ENG-FE/IDENTITY]] — Phase 1 Complete
+### 2026-02-07 11:30 [[Org Chart/ENG-FE/IDENTITY]] — Phase 1 Complete
 ```
 
 ---
@@ -283,10 +283,10 @@ The Work Log is **chronological** — oldest at top, newest at bottom. New entri
 3. Find the LAST entry (the one with the most recent date)
 4. **Add your new entry AFTER it** (add blank line, then your entry)
 
-**Template for new entry:**
+**Template for new entry (use full timestamp HH:MM):**
 ```markdown
 
-### 2026-02-07 [[Org Chart/ROLE/IDENTITY]] — Shift Summary
+### 2026-02-07 14:30 [[Org Chart/ROLE/IDENTITY]] — Shift Summary
 **Completed:**
 - [x] Specific item finished
 - [x] Another item finished
@@ -301,6 +301,11 @@ The Work Log is **chronological** — oldest at top, newest at bottom. New entri
 - Who should work next: [[Org Chart/NEXT-ROLE/IDENTITY]]
 - What they should do: Brief description
 ```
+
+**Timestamp format:** `YYYY-MM-DD HH:MM` (e.g., `2026-02-07 14:30`)
+- Include hours and minutes for minute-stale work tracking
+- Use 24-hour format for consistency
+- Separate date and time with a space
 
 **Remember:** The Work Log tells the story of what happened in ORDER. If you prepend or insert in the middle, the timeline becomes unreadable. **ALWAYS APPEND TO THE END.**
 

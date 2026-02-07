@@ -44,9 +44,13 @@ tags: []
 
 The Work Log is chronological. Oldest entries at top, newest at bottom. **Always add new entries at the BOTTOM of this section.**
 
+**Timestamp format:** `YYYY-MM-DD HH:MM` (e.g., `2026-02-07 14:30`)
+- Include hours and minutes for minute-stale work tracking
+- Use 24-hour format for consistency
+
 ---
 
-### [{{date:YYYY-MM-DD}} {{time:HH:mm}}] @Creator
+### {{date:YYYY-MM-DD HH:mm}} @Creator
 **Progress:** Task created
 **Completed:** 
 **Todos:** 
