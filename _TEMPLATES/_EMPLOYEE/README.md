@@ -26,7 +26,7 @@ reports_to:
 
 | Location | Purpose |
 |----------|---------|
-| [[Tasks/🗂️ TASKS\|Tasks]] | All work (shared) — check for your assignments |
+| [[Tasks/TASKS\|Tasks]] | All work (shared) — check for your assignments |
 | [[Notes/🗂️ NOTES\|Notes]] | All notes (shared) — contribute knowledge |
 
 ## 🎯 Current Focus
@@ -56,7 +56,7 @@ reports_to:
 - Keep it short and clear
 
 **Important:**
-- Tasks are in shared `Tasks/` folder — update `🗂️ TASKS.md` index
+- Tasks are in shared `Tasks/` folder — update `TASKS.md` index
 - Notes are in shared `Notes/` folder — update `🗂️ NOTES.md` index
 - **SHIFT-PROTOCOL.md lives at top level** (next to README)
 - Cross-link everything using `[[filename]]`
@@ -69,7 +69,7 @@ reports_to:
 
 1. **Read this README** — This is your dashboard and identity
 2. **Read your [[pinkbeam/Org Chart/PM/SHIFT-PROTOCOL|Shift Protocol]]** — Step-by-step shift instructions
-3. **Check [[Tasks/🗂️ TASKS|Tasks]]** — Look for tasks assigned to you
+3. **Check [[Tasks/TASKS|Tasks]]** — Look for tasks assigned to you
 4. **Execute your shift** — Follow the protocol
 
 **System Instructions:** [[_TEMPLATES/_INSTRUCTIONS/MASTER-GUIDE|MASTER-GUIDE]]

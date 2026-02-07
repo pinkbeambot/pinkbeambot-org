@@ -393,7 +393,7 @@ The CEO must verify before the task is truly done:
    ```
    - **KILL ALL CRON JOBS AND SUB-AGENTS** — Prevent zombie processes
    - Add CEO sign-off to Completion Notes
-   - Update `🗂️ TASKS.md` index — move to Completed section
+   - Update `TASKS.md` index — move to Completed section
    - Clear `WORK-LOCK.active_task: ""` (ready for next task)
    - Archive task file if >30 days old
    - Activate next task from queue
@@ -544,7 +544,7 @@ Break large tasks into phases. Each phase can have a primary owner.
 
 ## 🔄 Task Index Maintenance
 
-The `🗂️ TASKS.md` file serves as the master index. Keep it updated.
+The `TASKS.md` file serves as the master index. Keep it updated.
 
 ### Single-Task Index Format
 
@@ -553,9 +553,9 @@ The `🗂️ TASKS.md` file serves as the master index. Keep it updated.
 
 **Only ONE task can be active at a time.**
 
-| ID | Title | Status | Current Worker | Started |
-|------|------------------------------------------|-----------|------------------|---------|
-| — | *No active task — CEO needs to activate* | — | — | — |
+| ID | Title | Status | Worker | Started |
+|:---|:---|:---|:---|:---|
+| — | *No active task* | — | — | — |
 
 ---
 
@@ -563,16 +563,16 @@ The `🗂️ TASKS.md` file serves as the master index. Keep it updated.
 
 Tasks ready to become active when current task completes.
 
-| ID | Title | Priority | Primary Owner | Est. Hours |
-|------|------------------------------------------|----------|----------------------------------|------------|
-| [[TASK-001]] | Implement Pricing & Marketing Strategy | P0 | [[Org Chart/CMO/IDENTITY]] | 24 |
+| ID | Title | Priority | Owner | Est Hours |
+|:---|:---|:---|:---|---:|
+| TASK-001 | Implement Pricing & Marketing Strategy | P0 | CMO | 24 |
 
 ---
 
 ## 🚧 BLOCKED (On Hold)
 
 | ID | Title | Blocked By | Since |
-|------|-------|------------|-------|
+|:---|:---|:---|:---|
 | — | *No blocked tasks* | — | — |
 
 ---
@@ -580,17 +580,17 @@ Tasks ready to become active when current task completes.
 ## ✅ COMPLETED (Last 30 Days)
 
 | ID | Title | Completed | Verified By |
-|------|-------|-----------|-------------|
-| — | *No completed tasks yet* | — | — |
+|:---|:---|:---|:---|
+| — | *No completed tasks* | — | — |
 
 ---
 
 ## ❌ CANCELLED (Reference Only)
 
-Cancelled tasks stay here for reference — not deleted.
+Cancelled tasks stay here for reference - not deleted.
 
 | ID | Title | Cancelled | Reason |
-|------|-------|-----------|--------|
+|:---|:---|:---|:---|
 | — | *No cancelled tasks* | — | — |
 
 ---

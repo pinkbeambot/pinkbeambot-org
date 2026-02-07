@@ -20,7 +20,7 @@ Employees CANNOT create new tasks. If work is needed:
 ```
 pinkbeam/
 ├── Tasks/                       ← All tasks (shared)
-│   ├── 🗂️ TASKS.md            ← Index of all tasks
+│   ├── TASKS.md            ← Index of all tasks
 │   ├── TASK-001-stripe-integration.md
 │   ├── TASK-002-gateway-fix.md
 │   └── ...
@@ -41,7 +41,7 @@ pinkbeam/
 ```
 pinkbeam/
 ├── Tasks/                       ← All tasks (shared)
-│   ├── 🗂️ TASKS.md            ← Index of all tasks
+│   ├── TASKS.md            ← Index of all tasks
 │   ├── TASK-001-stripe-integration.md
 │   ├── TASK-002-gateway-fix.md
 │   └── ...
@@ -59,7 +59,7 @@ pinkbeam/
 
 ### Step 1: Check for Assigned Tasks
 
-Look at `Tasks/🗂️ TASKS.md` for tasks assigned to you:
+Look at `Tasks/TASKS.md` for tasks assigned to you:
 
 ```markdown
 ## 📋 Active Tasks
@@ -218,12 +218,12 @@ Even cancelled tasks stay. History matters.
 **Every task MUST be tracked in the shared index file.**
 
 ### What is the Index?
-The `Tasks/🗂️ TASKS.md` file provides an at-a-glance view of all tasks.
+The `Tasks/TASKS.md` file provides an at-a-glance view of all tasks.
 
 ### When Creating a Task — UPDATE THE INDEX
 
 **Step 1:** Create the task file in `Tasks/`
-**Step 2:** Immediately update `Tasks/🗂️ TASKS.md`
+**Step 2:** Immediately update `Tasks/TASKS.md`
 
 ### Index File Format
 

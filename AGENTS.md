@@ -301,7 +301,7 @@ The CEO receives the task after completion:
    - Change `task.status: completed`
    - Add CEO sign-off to Completion Notes
 
-3. **Update `🗂️ TASKS.md` index:**
+3. **Update `TASKS.md` index:**
    - Move task to "Completed Tasks" section
    - Add completion date
 
@@ -368,7 +368,7 @@ Use this when:
    **Next:** What to do instead (if anything)
    ```
 
-5. **Update `🗂️ TASKS.md` index** — move to "Cancelled Tasks" section
+5. **Update `TASKS.md` index** — move to "Cancelled Tasks" section
 
 6. **Clear active task:**
    ```yaml

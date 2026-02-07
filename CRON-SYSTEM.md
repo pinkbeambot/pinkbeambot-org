@@ -234,7 +234,7 @@ If WORK-LOCK shows `status: locked` with old timestamp:
 - **Shift Protocol:** `~/obsidian/pinkbeam/AGENTS.md`
 - **Work Lock:** `~/obsidian/pinkbeam/WORK-LOCK/WORK-LOCK.md`
 - **Active Task:** Tracked in `WORK-LOCK.active_task`
-- **Task Queue:** `~/obsidian/pinkbeam/Tasks/🗂️ TASKS.md`
+- **Task Queue:** `~/obsidian/pinkbeam/Tasks/TASKS.md`
 - **Employee Directories:** `~/obsidian/pinkbeam/Org Chart/{ROLE}/`
 
 ---

@@ -26,7 +26,7 @@ Always check if a document already exists before creating new.
 
 ### 2. Update Indexes
 Every new task/note MUST be added to the folder index:
-- Tasks: `Tasks/🗂️ TASKS.md`
+- Tasks: `Tasks/TASKS.md`
 - Notes: `Notes/🗂️ NOTES.md`
 
 ### 3. Cross-Link Everything

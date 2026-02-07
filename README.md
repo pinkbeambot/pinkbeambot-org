@@ -89,7 +89,7 @@ pinkbeam/
 │   ├── WORK-LOCK.md           ← ⛓️ THE LOCK (acquire before work)
 │   └── README.md              ← Work lock documentation
 ├── Tasks/                      ← All tasks (shared)
-│   ├── 🗂️ TASKS.md            ← Task index
+│   ├── TASKS.md            ← Task index
 │   └── TASK-XXX-*.md          ← Individual task files
 ├── Logs/                       ← Execution logs
 │   └── 🗂️ LOGS.md
