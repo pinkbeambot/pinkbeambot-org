@@ -240,34 +240,39 @@ Check off completed items in the task's Definition of Done checklist.
 - **Set `task.next_worker: "[[Org Chart/NEXT-ROLE/IDENTITY]]"`** (safety flag)
 - Update `task.current_worker: "[[Org Chart/NEXT-ROLE/IDENTITY]]"`
 
-**Step 2: Trigger Next Employee (WITH RETRY)**
+**Step 2: Trigger Next Employee (WITH RETRY + FALLBACK)**
 
 ```bash
 # Attempt 1
 cron run pbb-{NEXT-ROLE}-shift
 
-# If failed (wait 5 seconds)
-sleep 5
-
-# Attempt 2
-cron run pbb-{NEXT-ROLE}-shift
-
-# If failed (wait 10 seconds)
+# Wait and check if it started (check WORK-LOCK after 10 seconds)
 sleep 10
 
+# If lock still shows YOU as employee, try again
+cron run pbb-{NEXT-ROLE}-shift
+
 # Attempt 3 (final)
+sleep 5
 cron run pbb-{NEXT-ROLE}-shift
 ```
 
-**If all 3 attempts fail:**
-1. Document failure in Work Log:
-   ```markdown
-   **Handoff Failed:** Could not trigger [[Org Chart/NEXT-ROLE/IDENTITY]] after 3 attempts
-   **Manual intervention required:** Run `cron run pbb-{NEXT-ROLE}-shift`
-   ```
-2. Update `WORK-LOCK.task: "Handoff failed — manual trigger needed"`
-3. Release lock
-4. The next worker can still start by running their job manually
+**IMPORTANT: Cron timeout is OK!**
+
+If you see "gateway timeout" or "delivery target missing":
+- ✅ The job **DID** trigger (it runs in isolated session)
+- ✅ Your work is complete
+- ✅ The next worker will see the task when they run
+- ⚠️ Just document it in Work Log
+
+**Document in Work Log (regardless of trigger success):**
+```markdown
+### 2026-02-07 [[Org Chart/YOUR-ROLE/IDENTITY]] — HANDOFF
+**Next worker:** [[Org Chart/NEXT-ROLE/IDENTITY]]
+**Phase:** [Name of next phase]
+**Cron trigger:** [Success / Timeout - job still ran]
+**Manual trigger needed:** [Yes / No]
+```
 
 **Step 3: Complete Your Shift**
 - Go to Step 6 (Complete Shift)

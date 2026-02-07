@@ -189,21 +189,31 @@ When CEO verifies and completes a task:
 
 Handoffs can fail due to network issues (gateway timeouts). The system has multiple safeguards:
 
+### Understanding Cron Timeouts
+
+When you run `cron run pbb-{ROLE}-shift`, you may see:
+- `gateway timeout` - Network hiccup
+- `delivery target missing` - Isolated session can't receive response
+
+**These are OK!** The job **still runs**. The timeout is just the response channel failing.
+
 ### 1. Retry Protocol (Built into AGENTS.md)
 
 When handing off, agents retry 3 times:
 ```bash
 # Attempt 1
 cron run pbb-{ROLE}-shift
-sleep 5
+sleep 10  # Wait for job to start
 
-# Attempt 2
+# Check WORK-LOCK - if still showing YOU, retry
 cron run pbb-{ROLE}-shift
-sleep 10
+sleep 5
 
 # Attempt 3
 cron run pbb-{ROLE}-shift
 ```
+
+**After retries:** Document in Work Log and release lock. The job ran even if you got timeouts.
 
 ### 2. Safety Flag (next_worker field)
 
