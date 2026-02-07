@@ -204,19 +204,56 @@ Check off completed items in the task's Definition of Done checklist.
 
 ### 5.3 Hand Off or Continue
 
-**If task is NOT complete:**
+**CRITICAL: Handoffs must be resilient. Follow the retry protocol below.**
+
+#### Resilient Handoff Protocol
+
+**Step 1: Prepare Handoff**
 - Update `task.last_updated: "2026-02-07T00:30:00Z"`
 - Determine who should work next (look at checklist phases)
+- **Set `task.next_worker: "[[Org Chart/NEXT-ROLE/IDENTITY]]"`** (safety flag)
 - Update `task.current_worker: "[[Org Chart/NEXT-ROLE/IDENTITY]]"`
-- Trigger next employee: `cron run pbb-{NEXT-ROLE}-shift`
+
+**Step 2: Trigger Next Employee (WITH RETRY)**
+
+```bash
+# Attempt 1
+cron run pbb-{NEXT-ROLE}-shift
+
+# If failed (wait 5 seconds)
+sleep 5
+
+# Attempt 2
+cron run pbb-{NEXT-ROLE}-shift
+
+# If failed (wait 10 seconds)
+sleep 10
+
+# Attempt 3 (final)
+cron run pbb-{NEXT-ROLE}-shift
+```
+
+**If all 3 attempts fail:**
+1. Document failure in Work Log:
+   ```markdown
+   **Handoff Failed:** Could not trigger [[Org Chart/NEXT-ROLE/IDENTITY]] after 3 attempts
+   **Manual intervention required:** Run `cron run pbb-{NEXT-ROLE}-shift`
+   ```
+2. Update `WORK-LOCK.task: "Handoff failed — manual trigger needed"`
+3. Release lock
+4. The next worker can still start by running their job manually
+
+**Step 3: Complete Your Shift**
 - Go to Step 6 (Complete Shift)
+
+---
 
 **If task IS complete (100% of checklist checked):**
 - Change `task.status: review`
 - Set `task.completed_at: "2026-02-07T00:30:00Z"`
-- Update `task.current_worker: "[[Org Chart/CEO/IDENTITY]]"` (for verification)
+- Update `task.current_worker: "[[Org Chart/CEO/IDENTITY]]"`
+- **Use same retry protocol above to trigger CEO**
 - Fill out task's **Completion Notes** section
-- **Trigger CEO:** `cron run pbb-ceo-shift`
 - Go to Step 6 (Complete Shift)
 
 ---

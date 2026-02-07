@@ -25,9 +25,11 @@ Every piece of work is a task. Every task lives here. Everything is documented.
 ## 🆕 Creating a Task
 
 ### Naming Convention
+
 `TASK-{NNN}-{short-description}.md`
 
 Examples:
+
 - `TASK-001-stripe-integration.md`
 - `TASK-042-gateway-timeout-fix.md`
 - `TASK-156-onboarding-flow-redesign.md`
@@ -42,11 +44,13 @@ Creator makes task ──▶ Task in "todo" queue ──▶ CEO activates ──
 ```
 
 **New tasks start with:**
+
 - `status: todo`
 - `is_active: false`
 - `current_worker: ""`
 
 **The CEO activates tasks by:**
+
 1. Setting `WORK-LOCK.active_task: "[[Tasks/TASK-XXX]]"`
 2. Setting `task.is_active: true`
 3. Setting `task.status: in-progress`
@@ -73,6 +77,7 @@ collaborators:       # Others who need to contribute
   - "[[Org Chart/ENG-BE/IDENTITY]]"
   - "[[Org Chart/ENG-FE/IDENTITY]]"
 current_worker: ""   # Who holds the lock right now
+next_worker: ""      # Who should work next (safety flag for failed handoffs)
 
 # Tracking
 estimated_hours: 8
@@ -224,13 +229,13 @@ Record key decisions made during this task.
 
 ## 📊 Task Status Definitions
 
-| Status | Meaning | Can Work? | Next Step |
-|--------|---------|-----------|-----------|
-| `todo` | Waiting in queue | ⛔ No | CEO activates it |
-| `in-progress` | Active task being worked | ⛔ No (current_worker has lock) | Continue work or hand off |
-| `blocked` | Waiting on dependency | ⛔ No | Resolve blocker or switch tasks |
-| `review` | Work complete, pending CEO verification | ⚠️ CEO only | CEO verifies or rejects |
-| `completed` | Verified and archived | ⛔ No | None — task is done |
+| Status        | Meaning                                 | Can Work?                      | Next Step                       |
+| ------------- | --------------------------------------- | ------------------------------ | ------------------------------- |
+| `todo`        | Waiting in queue                        | ⛔ No                           | CEO activates it                |
+| `in-progress` | Active task being worked                | ⛔ No (current_worker has lock) | Continue work or hand off       |
+| `blocked`     | Waiting on dependency                   | ⛔ No                           | Resolve blocker or switch tasks |
+| `review`      | Work complete, pending CEO verification | ⚠️ CEO only                    | CEO verifies or rejects         |
+| `completed`   | Verified and archived                   | ⛔ No                           | None — task is done             |
 
 ### Single-Task Workflow
 
@@ -302,7 +307,8 @@ This task is tracked in `WORK-LOCK.active_task`. When you acquire the lock:
 
 ### While Working on Active Task
 
-2. **Update the Work Log** regularly:
+1. **Update the Work Log** regularly:
+
    ```markdown
    ## Work Log
    
@@ -316,11 +322,11 @@ This task is tracked in `WORK-LOCK.active_task`. When you acquire the lock:
    **Notes:** Context for next worker
    ```
 
-3. **Check off completed items** in the Definition of Done checklist
+2. **Check off completed items** in the Definition of Done checklist
 
-4. **Update `actual_hours`** as you work
+3. **Update `actual_hours`** as you work
 
-5. **If you encounter a blocker:**
+4. **If you encounter a blocker:**
    - Document in Work Log
    - If resolvable quickly: Resolve and continue
    - If requires FOUNDER: Create `FOUNDER/Todos/` item
@@ -354,6 +360,7 @@ This task is tracked in `WORK-LOCK.active_task`. When you acquire the lock:
    - Follow-up items
 
 3. **Update task fields:**
+
    ```yaml
    status: review
    completed_at: "2026-02-07T12:00:00Z"
@@ -385,12 +392,14 @@ The CEO must verify before the task is truly done:
 3. **Make decision:**
 
    **Option A: Approve and Archive**
+
    ```yaml
    status: completed
    verified_at: "2026-02-07T14:00:00Z"
    verified_by: "CEO"
    is_active: false
    ```
+
    - **KILL ALL CRON JOBS AND SUB-AGENTS** — Prevent zombie processes
    - Add CEO sign-off to Completion Notes
    - Update `TASKS.md` index — move to Completed section
@@ -401,10 +410,12 @@ The CEO must verify before the task is truly done:
    - Release lock
 
    **Option B: Reject and Return**
+
    ```yaml
    status: in-progress
    current_worker: "[[Org Chart/ROLE/IDENTITY]]"  # assign back with feedback
    ```
+
    - Document specific issues in Work Log
    - Trigger assigned employee
    - Release lock
@@ -446,6 +457,7 @@ Then trigger the first worker on that task.
 **Before marking a task `completed`, the CEO MUST clean up:**
 
 #### 1. Kill All Cron Jobs
+
 ```bash
 # List all cron jobs for this task
 cron list | grep pbb-
@@ -459,6 +471,7 @@ cron remove pbb-eng-be-shift
 ```
 
 #### 2. Kill All Sub-Agents / Sessions
+
 ```bash
 # List active sessions
 sessions_list
@@ -472,18 +485,21 @@ process kill <sessionId>
 ```
 
 #### 3. Verify Cleanup
+
 - [ ] No active cron jobs for completed task
 - [ ] No hanging sub-agent sessions
 - [ ] Work lock is released
 - [ ] Only then: mark task `completed`
 
 **Why this matters:**
+
 - Prevents zombie processes consuming resources
 - Avoids race conditions on next task activation
 - Ensures clean slate for next work cycle
 - Prevents duplicate/conflicting work
 
 **If you don't clean up:**
+
 - Multiple agents may try to work simultaneously
 - Cron jobs trigger on old task context
 - Resource leaks and system instability
@@ -494,11 +510,13 @@ process kill <sessionId>
 ## ✅ Checklist Best Practices
 
 ### Checklist Item Format
+
 ```markdown
 - [ ] [ID] Clear, verifiable action (OWNER)
 ```
 
 **ID Format:** Use short prefix + number
+
 - `[S1]`, `[S2]` — Setup phase
 - `[BE1]`, `[BE2]` — Backend phase  
 - `[FE1]`, `[FE2]` — Frontend phase
@@ -506,16 +524,19 @@ process kill <sessionId>
 - `[D1]`, `[D2]` — Deployment phase
 
 **Why IDs matter:**
+
 - Reference specific items in Work Log ("Completed [BE3]")
 - Track which items are done across shifts
 - Easier to verify completion
 
 **Good:**
+
 - [ ] `[BE1]` Create checkout session endpoint
 - [ ] `[BE2]` API returns 200 with session ID
 - [ ] `[BE3]` Error case: invalid price ID returns 400
 
 **Bad:**
+
 - [ ] Do Stripe stuff
 - [ ] Make it work
 - [ ] Code
@@ -548,14 +569,13 @@ The `TASKS.md` file serves as the master index. Keep it updated.
 
 ### Single-Task Index Format
 
-```markdown
 ## 🔴 ACTIVE TASK (Current Focus)
 
 **Only ONE task can be active at a time.**
 
 | ID | Title | Status | Worker | Started |
 |:---|:---|:---|:---|:---|
-| — | *No active task* | — | — | — |
+| TASK-001 | Implement Pricing & Marketing Strategy Updates | in-progress | ENG-FE | 2026-02-07 |
 
 ---
 
@@ -565,7 +585,7 @@ Tasks ready to become active when current task completes.
 
 | ID | Title | Priority | Owner | Est Hours |
 |:---|:---|:---|:---|---:|
-| TASK-001 | Implement Pricing & Marketing Strategy | P0 | CMO | 24 |
+| — | *No tasks in queue* | — | — | — |
 
 ---
 
@@ -707,7 +727,7 @@ Every work session adds an entry:
 **Next Steps:**
 - What should happen next
 - Who should do it
-```
+
 
 ---
 
@@ -725,6 +745,7 @@ Completed tasks older than 30 days should be archived.
 ## 🎯 Task Hygiene Checklist
 
 When creating a task:
+
 - [ ] Clear, specific title
 - [ ] Detailed objective and context
 - [ ] Checklist items are verifiable
@@ -736,6 +757,7 @@ When creating a task:
 - [ ] CEO notified of new task
 
 When CEO activates a task:
+
 - [ ] Task moved from QUEUE to ACTIVE TASK in index
 - [ ] `WORK-LOCK.active_task` set to task link
 - [ ] Task `is_active: true`, `status: in-progress`
@@ -744,6 +766,7 @@ When CEO activates a task:
 - [ ] First employee triggered
 
 When working a task:
+
 - [ ] Work Log updated every session
 - [ ] Checklist items checked when done
 - [ ] Hours tracked in `actual_hours`
@@ -752,6 +775,7 @@ When working a task:
 - [ ] Next worker identified for handoff
 
 When completing a task (100% done):
+
 - [ ] All checklist items checked
 - [ ] Completion Notes filled with summary, metrics, lessons
 - [ ] `status: review` (NOT completed)
@@ -761,6 +785,7 @@ When completing a task (100% done):
 - [ ] Index updated (status to review)
 
 When CEO verifies a task:
+
 - [ ] All checklist items reviewed
 - [ ] Deliverables validated
 - [ ] Completion Notes reviewed

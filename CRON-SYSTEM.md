@@ -13,6 +13,7 @@
 | `pbb-cmo-shift` | CMO | Marketing, growth, brand, copy | Ready |
 | `pbb-eng-fe-shift` | ENG-FE | Frontend, UI/UX, design system | Ready |
 | `pbb-eng-be-shift` | ENG-BE | Backend, APIs, infrastructure | Ready |
+| `pbb-monitor` | System | Auto-recovery from failed handoffs (every 5 min) | Disabled |
 
 ---
 
@@ -181,6 +182,62 @@ When CEO verifies and completes a task:
 1. Kill all cron jobs (see cleanup section above)
 2. Clear WORK-LOCK.active_task
 3. Recreate cron jobs if needed (for next task cycle)
+
+---
+
+## 🔄 Resilient Handoff System
+
+Handoffs can fail due to network issues (gateway timeouts). The system has multiple safeguards:
+
+### 1. Retry Protocol (Built into AGENTS.md)
+
+When handing off, agents retry 3 times:
+```bash
+# Attempt 1
+cron run pbb-{ROLE}-shift
+sleep 5
+
+# Attempt 2
+cron run pbb-{ROLE}-shift
+sleep 10
+
+# Attempt 3
+cron run pbb-{ROLE}-shift
+```
+
+### 2. Safety Flag (next_worker field)
+
+Tasks have a `next_worker` field that's set BEFORE attempting handoff:
+```yaml
+next_worker: "[[Org Chart/ENG-FE/IDENTITY]]"  # Who should work next
+```
+
+If handoff fails, this flag remains for recovery.
+
+### 3. Auto-Recovery Monitor (pbb-monitor)
+
+Enable automatic recovery:
+```bash
+# Enable the monitor (runs every 5 minutes)
+cron update pbb-monitor --enabled true
+```
+
+The monitor checks:
+- Is WORK-LOCK unlocked but active_task set?
+- Is next_worker set but current_worker hasn't changed in >2 minutes?
+- If so, auto-triggers the next worker
+
+**To disable:**
+```bash
+cron update pbb-monitor --enabled false
+```
+
+### 4. Manual Recovery
+
+If automatic recovery fails, manually trigger:
+```bash
+cron run pbb-{ROLE}-shift
+```
 
 ---
 
