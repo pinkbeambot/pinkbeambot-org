@@ -21,10 +21,14 @@
             "id": "dde15272cc0fe4a3",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "AGENTS.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "New tab"
+              "title": "AGENTS"
             }
           }
         ],
@@ -41,6 +45,19 @@
         "id": "062a3abdf36f45cb",
         "type": "tabs",
         "children": [
+          {
+            "id": "6477460e3d19090c",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
           {
             "id": "52014b0b2cace980",
             "type": "leaf",
@@ -83,25 +100,12 @@
         "type": "tabs",
         "children": [
           {
-            "id": "6477460e3d19090c",
-            "type": "leaf",
-            "state": {
-              "type": "file-explorer",
-              "state": {
-                "sortOrder": "alphabetical",
-                "autoReveal": false
-              },
-              "icon": "lucide-folder-closed",
-              "title": "Files"
-            }
-          },
-          {
             "id": "7fd807fb81b03941",
             "type": "leaf",
             "state": {
               "type": "backlink",
               "state": {
-                "file": "pinkbeambot/dev/information-engine/ROADMAP.md",
+                "file": "AGENTS.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -111,7 +115,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for ROADMAP"
+              "title": "Backlinks for AGENTS"
             }
           },
           {
@@ -189,43 +193,43 @@
       "bases:Create new base": false
     }
   },
-  "active": "52014b0b2cace980",
+  "active": "dde15272cc0fe4a3",
   "lastOpenFiles": [
-    "pinkbeambot/_TEMPLATES/Untitled.md",
-    "pinkbeambot/_TEMPLATES/_TASK.md",
-    "pinkbeambot/_TEMPLATES/Chats/README.md",
-    "pinkbeambot/_TEMPLATES/_EMPLOYEE/Notes/NOTES.md",
-    "pinkbeambot/Org Chart/CTO/Tasks/TASKS.md",
-    "pinkbeambot/_TEMPLATES/_EMPLOYEE/Chats",
-    "pinkbeambot/ORG CHART.md",
-    "pinkbeambot/Org Chart/CTO/Tasks/TASK-2026-001.md",
-    "pinkbeambot/Org Chart/CTO/Chats/README.md",
-    "pinkbeambot/Org Chart/OpenAI-Integration-Lead/Notes/NOTES.md",
-    "pinkbeambot/Org Chart/OpenAI-Integration-Lead/Tasks/TASKS.md",
-    "pinkbeambot/Org Chart/OpenAI-Integration-Lead/DIRECT_REPORTS.md",
-    "pinkbeambot/Org Chart/OpenAI-Integration-Lead/SKILLS.md",
-    "pinkbeambot/Org Chart/OpenAI-Integration-Lead/SOUL.md",
-    "pinkbeambot/Org Chart/OpenAI-Integration-Lead/IDENTITY.md",
-    "pinkbeambot/Org Chart/OpenAI-Integration-Lead/README.md",
-    "pinkbeambot/Org Chart/Hono-API-Lead/DIRECT_REPORTS.md",
-    "pinkbeambot/Org Chart/CMO/IDENTITY.md",
-    "pinkbeambot/Org Chart/Hono-API-Lead/Notes/NOTES.md",
-    "pinkbeambot/Org Chart/Hono-API-Lead/Tasks/TASKS.md",
-    "pinkbeambot/Org Chart/Hono-API-Lead/SKILLS.md",
-    "pinkbeambot/Org Chart/Hono-API-Lead/SOUL.md",
-    "pinkbeambot/Org Chart/Hono-API-Lead/IDENTITY.md",
-    "pinkbeambot/Org Chart/Hono-API-Lead/README.md",
-    "pinkbeambot/Org Chart/CMO/DIRECT_REPORTS.md",
-    "pinkbeambot/Org Chart/CMO/Tasks/TASKS.md",
-    "pinkbeambot/Org Chart/Supabase-Database-Lead/Notes/NOTES.md",
-    "pinkbeambot/Org Chart/TypeScript-Monorepo-Lead/Tasks",
-    "pinkbeambot/Org Chart/TypeScript-Monorepo-Lead/Notes",
-    "pinkbeambot/Org Chart/TypeScript-Monorepo-Lead/Chats",
-    "pinkbeambot/Org Chart/TypeScript-Monorepo-Lead",
-    "pinkbeambot/Org Chart/OpenAI-Integration-Lead/Tasks",
-    "pinkbeambot/Org Chart/OpenAI-Integration-Lead/Notes",
-    "pinkbeambot/Org Chart/OpenAI-Integration-Lead/Chats",
-    "pinkbeambot/Org Chart/OpenAI-Integration-Lead",
-    "pinkbeambot/Org Chart/Hono-API-Lead/Tasks"
+    "Notes/0-TO-BUSINESS-ROADMAP.md",
+    "Tasks/TASKS.md",
+    "Org Chart/ENG-BE/TOOLS.md",
+    "Org Chart/ENG-BE/IDENTITY.md",
+    "Org Chart/FOUNDER/TOOLS.md",
+    "Org Chart/FOUNDER/IDENTITY.md",
+    "Org Chart/ENG-FE/TOOLS.md",
+    "Org Chart/ENG-FE/IDENTITY.md",
+    "Org Chart/CTO/TOOLS.md",
+    "Org Chart/CTO/IDENTITY.md",
+    "Org Chart/CMO/TOOLS.md",
+    "Org Chart/CMO/IDENTITY.md",
+    "Org Chart/CEO/TOOLS.md",
+    "Org Chart/CEO/IDENTITY.md",
+    "Org Chart/FOUNDER",
+    "Org Chart/ENG-FE",
+    "Org Chart/ENG-BE",
+    "Org Chart/CTO",
+    "Org Chart/CMO",
+    "Org Chart/CEO",
+    "Org Chart",
+    "_TEMPLATES/_EMPLOYEE/SKILLS.md",
+    "_TEMPLATES/_EMPLOYEE/SHIFT-PROTOCOL.md",
+    "_TEMPLATES/_EMPLOYEE/IDENTITY.md",
+    "_TEMPLATES/_EMPLOYEE/README.md",
+    "_TEMPLATES/_INSTRUCTIONS/TASK-SYSTEM.md",
+    "_TEMPLATES/_INSTRUCTIONS/NOTE-SYSTEM.md",
+    "_TEMPLATES/_INSTRUCTIONS/MASTER-GUIDE.md",
+    "_TEMPLATES/📋 TEMPLATE INDEX.md",
+    "_TEMPLATES/_TASK.md",
+    "_TEMPLATES/_NOTE.md",
+    "_TEMPLATES/_INSTRUCTIONS",
+    "_TEMPLATES/_EMPLOYEE",
+    "_TEMPLATES",
+    "WORK-LOCK/README.md",
+    "WORK-LOCK/WORK-LOCK.md"
   ]
 }
