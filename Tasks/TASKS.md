@@ -584,7 +584,7 @@ The `TASKS.md` file serves as the master index. Keep it updated.
 
 | ID | Title | Status | Worker | Started |
 |:---|:---|:---|:---|:---|
-| TASK-001 | Implement Pricing & Marketing Strategy Updates | in-progress | ENG-FE | 2026-02-07 |
+| — | *No active task* | — | — | — |
 
 ---
 
@@ -610,7 +610,7 @@ Tasks ready to become active when current task completes.
 
 | ID | Title | Completed | Verified By |
 |:---|:---|:---|:---|
-| — | *No completed tasks* | — | — |
+| TASK-001 | [[Tasks/archive/TASK-001-pricing-marketing-implementation\|Implement Pricing & Marketing Strategy Updates]] | 2026-02-07 | CEO |
 
 ---
 

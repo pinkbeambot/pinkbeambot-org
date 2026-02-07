@@ -1,6 +1,6 @@
 ---
 status: unlocked
 employee: ""
-active_task: "[[Tasks/TASK-001-pricing-marketing-implementation]]"
+active_task: ""
 started_at: ""
 ---

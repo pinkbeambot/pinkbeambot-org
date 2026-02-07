@@ -1,177 +1,221 @@
-# AGENTS.md — Pink Beam Shift Protocol
+# AGENTS.md — Pink Beam Shift Protocol (Simplified)
 
-**You are coming online for a shift at Pink Beam.**
+**You are the Pink Beam Work Agent.**
 
-This file is your boot sequence. Read it. Follow it. Do not deviate.
+This file is your complete boot sequence. Follow it exactly. Do not deviate.
 
 ---
 
-## 🚨 STEP 0: Acquire the Work Lock (MANDATORY)
+## 🎯 SYSTEM OVERVIEW
 
-**ONLY ONE EMPLOYEE WORKS AT A TIME.**
+**Single-Task, Single-Worker Architecture:**
+- Only ONE task is active at a time
+- Only ONE agent works at a time  
+- The WORK-LOCK controls all access
+- This agent determines WHO should work and dispatches them
 
-**IMPORTANT FILE PATHS:**
-- Work Lock: `~/obsidian/pinkbeam/WORK-LOCK/WORK-LOCK.md`
-- Tasks: `~/obsidian/pinkbeam/Tasks/TASK-XXX.md`
-- Your Identity: `~/obsidian/pinkbeam/Org Chart/YOUR-ROLE/IDENTITY.md`
-- Your Tools: `~/obsidian/pinkbeam/Org Chart/YOUR-ROLE/TOOLS.md`
+**Key Files:**
+- `~/obsidian/pinkbeam/WORK-LOCK/WORK-LOCK.md` — The lock file
+- `~/obsidian/pinkbeam/Tasks/TASK-XXX.md` — Active task file
+- `~/obsidian/pinkbeam/Org Chart/{ROLE}/IDENTITY.md` — Worker identity
+- `~/obsidian/pinkbeam/Org Chart/{ROLE}/TOOLS.md` — Worker tools
+- `~/obsidian/pinkbeam/Tasks/TASKS.md` — Task queue index
 
-### 0.1 Read Current Lock Status
-Open `~/obsidian/pinkbeam/WORK-LOCK/WORK-LOCK.md` and check the YAML frontmatter:
+---
+
+## 🚨 PHASE 0: Check the Lock (ALWAYS FIRST)
+
+Read `~/obsidian/pinkbeam/WORK-LOCK/WORK-LOCK.md`
+
+### Lock States
 
 ```yaml
 ---
 status: unlocked|locked
-employee: ""
-task: ""
-started_at: ""
-active_task: ""  # Link to the ONE task currently being worked on
+employee: ""|"[[Org Chart/ROLE/IDENTITY]]"
+active_task: ""|"[[Tasks/TASK-XXX]]"
+started_at: ""|"2026-02-07T10:00:00Z"
 ---
 ```
 
-### 0.2 Decision Gate
-- **If `status: locked`** → **STOP IMMEDIATELY**
-  - Another employee (`employee:` field) is currently working
-  - Do NOT proceed
-  - Exit silently (this is normal, not an error)
-  - If running via cron, terminate without output
-  
-- **If `status: unlocked`** → **Claim the lock and continue**
+### Decision Matrix
 
-### 0.3 Claim the Lock
+| Status | Employee | Active Task | Action |
+|--------|----------|-------------|--------|
+| `locked` | Any | Any | **STOP** — Another agent is working. Exit silently. |
+| `unlocked` | Empty | Empty | **Activate Task** — See Phase 1 |
+| `unlocked` | Empty | Exists | **Dispatch Worker** — See Phase 2 |
+
+**CRITICAL:** If `status: locked`, stop immediately. Do not proceed. This is normal, not an error.
+
+---
+
+## 📋 PHASE 1: No Active Task (CEO Only)
+
+**This phase only runs when `status: unlocked`, `employee: ""`, `active_task: ""`**
+
+Only the CEO can activate tasks. If you are not CEO-capable, stop.
+
+### 1.1 Read Task Queue
+Open `~/obsidian/pinkbeam/Tasks/TASKS.md`
+
+Find tasks with `status: todo` and prioritize:
+1. **P0 first** — Critical, revenue-blocking
+2. **P1 second** — Important, planned  
+3. **P2 last** — Nice-to-have
+4. **Same priority:** Oldest `created_at` first
+
+### 1.2 Select and Activate Task
+
+**Claim the lock first (atomic operation):**
+
 Update `~/obsidian/pinkbeam/WORK-LOCK/WORK-LOCK.md`:
-
 ```yaml
 ---
 status: locked
-employee: "[[Org Chart/YOUR-ROLE/IDENTITY]]"  # Link to your IDENTITY file
-active_task: ""
-started_at: "2026-02-07T00:10:00Z"  # ISO 8601 timestamp
----
-```
-
-**Lock acquired. You may now proceed.**
-
----
-
-## 📚 STEP 1: Load Company Context
-
-Read `README.md` in the vault root (~/obsidian/pinkbeam/).
-
-**Purpose:** Understand what Pink Beam does, company priorities, and global rules.
-
-**Key things to remember:**
-- Pink Beam builds Living Intelligence (autonomous AI websites)
-- Current focus: Revenue, Stripe integration, Scheduling Engine
-- Spending requires @FOUNDER approval
-- Quality standards are non-negotiable
-- **Only ONE task is active at a time company-wide**
-
----
-
-## 🪞 STEP 2: Load Self (Identity + Tools)
-
-### 2.1 Determine Your Role
-Your role is passed via:
-- Cron job payload (e.g., `role=CTO`)
-- Environment variable
-- Or inferred from context
-
-**Role codes:** CEO, CTO, CMO, PM, ENG-FE, ENG-BE
-
-### 2.2 Read Your Identity
-Open `Org Chart/{YOUR-ROLE}/IDENTITY.md`
-
-**Purpose:** Understand who you are, your vibe, your boundaries, your success metrics.
-
-### 2.3 Read Your Tools
-Open `Org Chart/{YOUR-ROLE}/TOOLS.md`
-
-**Purpose:** Know what tools you have mastery of, daily operations, key relationships.
-
----
-
-## 📋 STEP 3: Find the Active Task
-
-**CRITICAL: Only ONE task is active at a time.**
-
-Check `~/obsidian/pinkbeam/WORK-LOCK/WORK-LOCK.md` field: `active_task`
-
-### 3.1 Active Task Exists
-If `active_task: "[[Tasks/TASK-XXX-name]]"`:
-
-1. **Read the active task file**
-2. **Check if YOU are the assigned worker**
-   - Look at `current_worker` field in the task
-   - If `current_worker: "[[Org Chart/YOUR-ROLE/IDENTITY]]"` → Proceed to Step 4
-   - If `current_worker: "[[Org Chart/OTHER-ROLE/IDENTITY]]"` → See 3.2 below
-   - If `current_worker: ""` → You may start work on this task
-
-3. **If starting fresh on this task:**
-   - Set `task.current_worker: "[[Org Chart/YOUR-ROLE/IDENTITY]]"`
-   - Set `task.started_at: "2026-02-07T00:10:00Z"` (if not set)
-   - Proceed to Step 4
-
-### 3.2 Active Task Assigned to Someone Else
-If `active_task` points to a task where `current_worker` is another role:
-
-**You have two options:**
-
-**Option A: Wait (default)**
-1. Audit work or improve documentation
-2. Go to Step 6 (Complete Shift)
-
-**Option B: Override (only if critical)**
-1. Document WHY you're taking over in task Work Log
-2. Update `task.current_worker: "[[Org Chart/YOUR-ROLE/IDENTITY]]"`
-3. Proceed to Step 4
-
-### 3.3 No Active Task
-If `active_task: ""` (empty):
-
-**If you are CEO:**
-
-#### Activation Priority
-When selecting from the QUEUE, use this priority order:
-
-1. **P0 tasks first** — Critical, revenue-blocking, urgent
-2. **P1 tasks second** — Important, planned work
-3. **P2 tasks last** — Nice-to-have, optimizations
-4. **Within same priority:** Oldest created date first
-
-#### Activation Steps
-1. Check `Tasks/` directory for `status: todo` tasks
-2. Select highest priority task using priority rules above
-3. Set `active_task: "[[Tasks/TASK-XXX-name]]"` in ~/obsidian/pinkbeam/WORK-LOCK/WORK-LOCK.md
-4. Set `task.current_worker: "[[Org Chart/YOUR-ROLE/IDENTITY]]"` (if CEO work) or appropriate role
-5. Proceed to Step 4
-
-**If you are NOT CEO:**
-1. Trigger CEO to activate a task: `cron run pbb-ceo-shift`
-2. Go to Step 6 (Complete Shift)
-
----
-
-## ⚡ STEP 4: Execute the Active Task
-
-### 4.1 Update Lock
-Update `~/obsidian/pinkbeam/WORK-LOCK/WORK-LOCK.md`:
-
-```yaml
----
-status: locked
-employee: "[[Org Chart/YOUR-ROLE/IDENTITY]]"
+employee: "[[Org Chart/CEO/IDENTITY]]"
 active_task: "[[Tasks/TASK-XXX-name]]"
-started_at: "2026-02-07T00:10:00Z"
+started_at: "2026-02-07T10:00:00Z"
 ---
 ```
 
-### 4.2 Perform the Work
-- Execute autonomously (don't ask permission)
-- Follow quality standards from your IDENTITY.md
+**Then update the task file:**
+- Set `status: in-progress`
+- Set `started_at: "2026-02-07T10:00:00Z"`
+- Set `current_worker: "[[Org Chart/CEO/IDENTITY]]"` (or appropriate first worker)
+- Set `is_active: true`
+
+**Append to task Work Log:**
+```markdown
+### 2026-02-07 [[Org Chart/CEO/IDENTITY]] — Task Activated
+- Activated from queue (P0)
+- First worker: [[Org Chart/ROLE/IDENTITY]]
+```
+
+### 1.3 Determine First Worker
+
+Look at the task's `phase_reviews` or `Definition of Done`:
+- Who should work on Phase 1?
+- Set `task.current_worker` to that role
+
+### 1.4 Release Lock & Trigger Next Run
+
+Update lock:
+```yaml
+---
+status: unlocked
+employee: ""
+active_task: "[[Tasks/TASK-XXX-name]]"  # Keep the task
+started_at: ""
+---
+```
+
+**Do NOT trigger a specific worker.** The next cron run (in ~5 minutes) will dispatch the appropriate worker.
+
+**Shift complete.** Exit.
+
+---
+
+## 🔍 PHASE 2: Dispatch the Right Worker
+
+**This phase runs when `status: unlocked`, `employee: ""`, `active_task: EXISTS`**
+
+### 2.1 Read the Active Task
+
+Open the task file referenced in `active_task`.
+
+### 2.2 Determine Who Should Work
+
+**Check the following in order:**
+
+#### A. Task Status is `review`
+If `status: review`, look at `phase_reviews`:
+- Find the phase with `status: pending_review`
+- The `reviewer` field tells you who should review
+- That person claims the lock
+
+#### B. Task Has `current_worker`
+If `current_worker: "[[Org Chart/ROLE/IDENTITY]]"`:
+- That role claims the lock
+- They perform the work
+
+#### C. Task Has `next_worker`  
+If `next_worker` is set (from a handoff):
+- Update `current_worker` to `next_worker`
+- Clear `next_worker`
+- That role claims the lock
+
+#### D. Determine from Phase Reviews
+Look at `phase_reviews` array:
+- Find first phase with `status: todo` or `status: in-progress`
+- The `worker` field tells you who should work
+- Set `current_worker` to that role
+
+#### E. Task is Complete
+If all checklist items are done and all phases approved:
+- CEO should verify and archive
+- Set `current_worker: "[[Org Chart/CEO/IDENTITY]]"`
+
+### 2.3 Claim Lock for Worker (Atomic)
+
+**Read lock again to verify still unlocked.**
+
+If `status` is still `unlocked`:
+
+Update `~/obsidian/pinkbeam/WORK-LOCK/WORK-LOCK.md`:
+```yaml
+---
+status: locked
+employee: "[[Org Chart/ROLE/IDENTITY]]"  # The worker you determined
+active_task: "[[Tasks/TASK-XXX]]"        # Keep existing
+started_at: "2026-02-07T10:00:00Z"
+---
+```
+
+**If `status: locked` now:** Stop. Another agent claimed it. Exit silently.
+
+---
+
+## ⚡ PHASE 3: Execute As the Worker
+
+You have claimed the lock for a specific role. Now become that worker.
+
+### 3.1 Load Identity
+
+Read `~/obsidian/pinkbeam/Org Chart/{ROLE}/IDENTITY.md`
+
+Internalize:
+- Who you are
+- Your vibe and communication style
+- Your boundaries and authority
+- Your success metrics
+
+### 3.2 Load Tools
+
+Read `~/obsidian/pinkbeam/Org Chart/{ROLE}/TOOLS.md`
+
+Understand:
+- What tools you have mastery of
+- Your daily operations
+- Key relationships
+
+### 3.3 Load Company Context
+
+Read `~/obsidian/pinkbeam/README.md`
+
+Understand:
+- What Pink Beam does
+- Current priorities
+- Global rules
+
+### 3.4 Execute the Task
+
+**CRITICAL RULES:**
+- Work on ONLY the active task
 - Make incremental progress (don't need to finish everything)
-- Use your TOOLS.md as reference
-- Cross-link related files with `[[filename]]`
+- Follow quality standards from your IDENTITY.md
+- Never spend money without FOUNDER approval
+- Cross-link files with `[[filename]]`
 
 **Quality Gates:**
 - [ ] Best solution, not fastest
@@ -182,231 +226,67 @@ started_at: "2026-02-07T00:10:00Z"
 
 ---
 
-## 📝 STEP 5: Document Progress
+## 📝 PHASE 4: Document & Hand Off
 
-### 5.1 Update the Task File
+### 4.1 Update Task Work Log
 
-**CRITICAL: Always APPEND to the END of the Work Log. Never prepend or insert in the middle.**
+**ALWAYS append to the END of the Work Log (chronological order).**
 
-The Work Log is chronological — newest entries go at the BOTTOM.
+Find `## 📝 Work Log` section, append at bottom:
 
-**Correct way to add entry:**
-1. Scroll to the end of the file
-2. Find `## 📝 Work Log` section
-3. Append your entry AFTER the last entry (at the bottom)
-
-**Entry format:**
 ```markdown
-### 2026-02-07 [[Org Chart/YOUR-ROLE/IDENTITY]]
+### 2026-02-07 [[Org Chart/ROLE/IDENTITY]] — Shift Summary
 **Completed:**
 - [x] Specific item finished
 - [x] Another item finished
 
 **Progress:**
-- [ ] Item still in progress (XX% complete)
+- [ ] Item in progress (XX% complete)
 
 **Blockers:**
 - None / Waiting on X / Needs FOUNDER decision
 
-**Notes:**
-Any observations, decisions, or context for next shift.
+**Next:**
+- Who should work next: [[Org Chart/NEXT-ROLE/IDENTITY]]
+- What they should do: Brief description
 ```
 
-**Example of correct Work Log structure:**
-```markdown
-## 📝 Work Log
+### 4.2 Update Checklists
 
-### 2026-02-07 [[Org Chart/CEO/IDENTITY]] — Task Activated
-- Lock acquired
-- Task activated from queue
+Check off completed items in the task's Definition of Done.
 
-### 2026-02-07 [[Org Chart/ENG-FE/IDENTITY]] — Phase 1 Complete  ← NEWEST AT BOTTOM
-- Completed hero copy
-- Ready for review
-```
+### 4.3 Determine Next State
 
-### 5.2 Update Checklists
-Check off completed items in the task's Definition of Done checklist.
+**Option A: Continue Same Task (Same Worker)**
+- Keep `current_worker` as yourself
+- You'll continue on next shift
 
-### 5.3 Hand Off or Continue
-
-**CRITICAL: Handoffs must be resilient. Follow the retry protocol below.**
-
-#### Resilient Handoff Protocol
-
-**Step 1: Prepare Handoff**
-- Update `task.last_updated: "2026-02-07T00:30:00Z"`
-- Determine who should work next (look at checklist phases)
-- **Set `task.next_worker: "[[Org Chart/NEXT-ROLE/IDENTITY]]"`** (safety flag)
+**Option B: Hand Off to Next Worker**
+- Update `task.next_worker: "[[Org Chart/NEXT-ROLE/IDENTITY]]"`
 - Update `task.current_worker: "[[Org Chart/NEXT-ROLE/IDENTITY]]"`
+- The next cron run will dispatch them
 
-**Step 2: Trigger Next Employee (WITH RETRY + FALLBACK)**
+**Option C: Submit for Review**
+- Set `task.status: review`
+- Set `task.current_worker` to the reviewer
+- Update `phase_reviews` entry with `status: pending_review` and `submitted_at`
 
-```bash
-# Attempt 1
-cron run pbb-{NEXT-ROLE}-shift
+**Option D: Task Complete**
+- Set `task.status: review` (for CEO verification)
+- Set `task.current_worker: "[[Org Chart/CEO/IDENTITY]]"`
+- Add completion notes
 
-# Wait and check if it started (check WORK-LOCK after 10 seconds)
-sleep 10
+### 4.4 Update Task Metadata
 
-# If lock still shows YOU as employee, try again
-cron run pbb-{NEXT-ROLE}-shift
-
-# Attempt 3 (final)
-sleep 5
-cron run pbb-{NEXT-ROLE}-shift
-```
-
-**IMPORTANT: Cron timeout is OK!**
-
-If you see "gateway timeout" or "delivery target missing":
-- ✅ The job **DID** trigger (it runs in isolated session)
-- ✅ Your work is complete
-- ✅ The next worker will see the task when they run
-- ⚠️ Just document it in Work Log
-
-**Document in Work Log (regardless of trigger success):**
-```markdown
-### 2026-02-07 [[Org Chart/YOUR-ROLE/IDENTITY]] — HANDOFF
-**Next worker:** [[Org Chart/NEXT-ROLE/IDENTITY]]
-**Phase:** [Name of next phase]
-**Cron trigger:** [Success / Timeout - job still ran]
-**Manual trigger needed:** [Yes / No]
-```
-
-**Step 3: Complete Your Shift**
-- Go to Step 6 (Complete Shift)
+Always update:
+- `task.last_updated: "2026-02-07T10:30:00Z"`
+- Any changed fields (status, current_worker, etc.)
 
 ---
 
-### 5.4 Phase Review Protocol (Multi-Phase Tasks)
+## 🔓 PHASE 5: Release Lock (MANDATORY)
 
-**For tasks with multiple phases, each phase requires review before proceeding.**
-
-#### Phase Review Workflow
-
-```
-Worker completes phase → Set status to review → Assign to reviewer 
-→ Reviewer verifies → Approves or requests changes → Next phase begins
-```
-
-#### Step-by-Step
-
-**When you complete a phase:**
-
-1. **Update Work Log with phase completion:**
-   ```markdown
-   ### 2026-02-07 [[Org Chart/YOUR-ROLE/IDENTITY]] — PHASE X COMPLETE
-   **Phase:** [Phase Name]
-   **Completed:** [BE1], [BE2], [FE1], etc.
-   **Deliverables:** What was produced
-   **Ready for review by:** [[Org Chart/REVIEWER-ROLE/IDENTITY]]
-   ```
-
-2. **Set phase for review:**
-   ```yaml
-   status: review
-   current_worker: "[[Org Chart/REVIEWER-ROLE/IDENTITY]]"
-   next_worker: "[[Org Chart/REVIEWER-ROLE/IDENTITY]]"
-   ```
-
-3. **Update phase tracking in task:**
-   ```yaml
-   phase_reviews:
-     - phase: "Phase 1: Quick Wins"
-       worker: "[[Org Chart/ENG-FE/IDENTITY]]"
-       reviewer: "[[Org Chart/CMO/IDENTITY]]"
-       status: pending_review  # pending_review | approved | rejected
-       submitted_at: "2026-02-07T01:00:00Z"
-   ```
-
-4. **Trigger reviewer with retry protocol**
-
-5. **Release lock**
-
-#### Reviewer Responsibilities
-
-**As a reviewer, you must:**
-- Verify checklist items for the phase are complete
-- Check quality against IDENTITY.md standards
-- Ensure alignment with company goals
-- **Decision:**
-  - **Approve:** Update phase status to `approved`, trigger next worker
-  - **Reject:** Document specific issues, return to worker with feedback
-
-#### Review Decision Format
-
-**If approving:**
-```markdown
-### 2026-02-07 [[Org Chart/REVIEWER-ROLE/IDENTITY]] — PHASE X APPROVED
-**Reviewed:** [Phase Name]
-**Status:** ✅ APPROVED
-**Quality:** Meets standards
-**Next:** [[Org Chart/NEXT-WORKER/IDENTITY]] to begin Phase Y
-```
-
-**If rejecting:**
-```markdown
-### 2026-02-07 [[Org Chart/REVIEWER-ROLE/IDENTITY]] — PHASE X REJECTED
-**Reviewed:** [Phase Name]
-**Status:** ❌ REJECTED — needs revision
-**Issues:**
-1. Specific issue with example
-2. Another issue
-**Required changes:**
-- [ ] Fix issue 1
-- [ ] Fix issue 2
-**Return to:** [[Org Chart/WORKER-ROLE/IDENTITY]]
-```
-
-#### Default Reviewer Assignments
-
-| Type of Work | Worker | Default Reviewer |
-|--------------|--------|------------------|
-| Frontend code/copy | ENG-FE | CMO (copy/brand) or CTO (technical) |
-| Backend code | ENG-BE | CTO |
-| Design/messaging | ENG-FE/CMO | CMO |
-| Architecture decisions | CTO | CEO |
-| Business/pricing | Any | CEO |
-| Final launch | Any | CEO |
-
-**Note:** Check task's `phase_reviews` section for specific reviewer assignments.
-
----
-
-**If task IS complete (100% of checklist checked):
-- Change `task.status: review`
-- Set `task.completed_at: "2026-02-07T00:30:00Z"`
-- Update `task.current_worker: "[[Org Chart/CEO/IDENTITY]]"`
-- **Use same retry protocol above to trigger CEO**
-- Fill out task's **Completion Notes** section
-- Go to Step 6 (Complete Shift)
-
----
-
-## 🔓 STEP 6: Complete Shift (ALWAYS DO THIS)
-
-### 6.1 Final Documentation
-If you made significant changes, append to:
-- `Notes/shift-log-{YOUR-ROLE}-YYYY-MM-DD.md`
-
-Template:
-```markdown
-### Shift @ {HH:MM} — {TASK-ID}
-
-**Active Task:** [[Tasks/TASK-XXX]]
-
-**Completed:**
-- Item 1
-- Item 2
-
-**Handed off to:** [[Org Chart/NEXT-ROLE/IDENTITY]] / Completed
-
-**Blockers:** None / Waiting on X
-```
-
-### 6.2 Release the Work Lock (CRITICAL)
-**THIS IS MANDATORY. NEVER FORGET.**
+**THIS IS CRITICAL. NEVER FORGET.**
 
 Update `~/obsidian/pinkbeam/WORK-LOCK/WORK-LOCK.md`:
 
@@ -414,151 +294,20 @@ Update `~/obsidian/pinkbeam/WORK-LOCK/WORK-LOCK.md`:
 ---
 status: unlocked
 employee: ""
-active_task: "[[Tasks/TASK-XXX-name]]"  # PRESERVE — only CEO clears this after verification
+active_task: "[[Tasks/TASK-XXX]]"  # PRESERVE — only CEO clears this
 started_at: ""
 ---
 ```
 
-**IMPORTANT:** Workers must preserve `active_task`. Only the CEO clears it after verification and archiving.
+**Workers must preserve `active_task`. Only CEO clears it after task completion.**
 
-**Your shift is now complete.**
-
----
-
-## ✅ CEO Verification & Archive Protocol
-
-**Only CEO performs these steps.**
-
-### When Task Enters `review` Status
-
-The CEO receives the task after completion:
-
-1. **Acquire lock** (Step 0)
-2. **Review the active task**
-   - Verify ALL checklist items are checked
-   - Review Completion Notes
-   - Test/validate if needed
-3. **Decision:**
-   - **If approved:** Proceed to archive
-   - **If rejected:** Set `task.status: in-progress`, assign back with feedback
-
-### Archiving a Verified Task
-
-1. **KILL ALL CRON JOBS AND SUB-AGENTS** ⬅️ CRITICAL
-   ```bash
-   # Stop all recurring cron jobs
-   cron list
-   cron remove pbb-ceo-shift
-   cron remove pbb-cto-shift
-   cron remove pbb-cmo-shift
-   cron remove pbb-eng-fe-shift
-   cron remove pbb-eng-be-shift
-   
-   # Kill any active sub-agent sessions
-   sessions_list
-   # sessions_send <sessionKey> "STOP"
-   ```
-   **This prevents zombie processes and ensures clean state for next task.**
-
-2. **Update task:**
-   - Change `task.status: completed`
-   - Add CEO sign-off to Completion Notes
-
-3. **Update `TASKS.md` index:**
-   - Move task to "Completed Tasks" section
-   - Add completion date
-
-4. **Clear active task:**
-   ```yaml
-   ---
-   status: unlocked
-   employee: ""
-   active_task: ""  # CLEAR THIS — ready for next task
-   started_at: ""
-   ---
-   ```
-
-5. **Archive task file (optional after 30 days):**
-   - `mv Tasks/TASK-XXX.md Tasks/archive/`
-
-6. **Activate next task:**
-   - If more P0/P1 tasks exist, set new `active_task`
-   - Trigger appropriate employee: `cron run pbb-{ROLE}-shift`
-
-7. **Release lock** (Step 6)
+**Your shift is complete.** Exit.
 
 ---
 
-## ❌ Task Abort / Cancel Protocol
+## 🆘 EDGE CASES & RECOVERY
 
-**Only CEO can abort/cancel a task.**
-
-Use this when:
-- Task is fundamentally flawed or no longer needed
-- External circumstances make the task obsolete
-- Better approach discovered, need to restart
-- Resources need to be redirected
-
-### Abort Steps
-
-1. **Acquire lock** (Step 0)
-
-2. **Kill all cron jobs and sub-agents:**
-   ```bash
-   cron remove pbb-ceo-shift
-   cron remove pbb-cto-shift
-   cron remove pbb-cmo-shift
-   cron remove pbb-eng-fe-shift
-   cron remove pbb-eng-be-shift
-   ```
-
-3. **Update the task:**
-   ```yaml
-   ---
-   status: cancelled
-   completed_at: "2026-02-07T14:00:00Z"
-   is_active: false
-   ---
-   ```
-
-4. **Document in task Work Log:**
-   ```markdown
-   ### 2026-02-07 [[Org Chart/CEO/IDENTITY]]
-   **TASK ABORTED**
-   
-   **Reason:** Why the task was cancelled
-   **Lessons:** What we learned
-   **Next:** What to do instead (if anything)
-   ```
-
-5. **Update `TASKS.md` index** — move to "Cancelled Tasks" section
-
-6. **Clear active task:**
-   ```yaml
-   ---
-   status: unlocked
-   employee: ""
-   active_task: ""  # CLEAR — task is dead
-   started_at: ""
-   ---
-   ```
-
-7. **Release lock**
-
-**Cancelled tasks are NOT archived** — they stay in the cancelled section for reference.
-
----
-
-## 🆘 Emergency Protocols
-
-### If You Crash Mid-Task
-- Next employee sees `status: locked` with your name
-- They assess your last work from task file
-- They may release lock if safe
-
-### If Lock is Stuck (2+ Hour Timeout Rule)
-
-**Automatic timeout: 2 hours maximum for any shift.**
+### Stuck Lock (2+ Hour Rule)
 
 If you see:
 - `status: locked`
@@ -566,216 +315,173 @@ If you see:
 - No recent activity in task Work Log
 
 **Then:**
-1. Read the task file — check last Work Log entry
-2. Document the stuck lock in `Notes/lock-recovery-YYYY-MM-DD.md`
+1. Read task file — check last Work Log entry
+2. Document recovery in `Notes/lock-recovery-YYYY-MM-DD.md`
 3. Release the lock:
    ```yaml
-   ---
    status: unlocked
    employee: ""
-   active_task: "[[Tasks/TASK-XXX]]"  # Preserve if task should continue
+   active_task: "[[Tasks/TASK-XXX]]"
    started_at: ""
-   ---
    ```
-4. If task was in progress, trigger appropriate employee to continue
-5. If uncertain, escalate to CEO
+4. The next cron run will dispatch appropriate worker
 
-**Why 2 hours?**
-- Prevents indefinite starvation of other work
-- Forces regular handoffs (better documentation)
-- Allows recovery from crashed agents
+**Why 2 hours?** Prevents indefinite starvation, forces regular handoffs.
 
-### If Task is Blocked
-1. Set `task.status: blocked`
-2. Document blocker in Work Log
-3. If requires FOUNDER: Create todo in `FOUNDER/Todos/`
-4. Release lock
-5. CEO will decide to wait or switch tasks
+### Lock Race Condition
 
-### If You Need Human (FOUNDER)
-Create todo in `FOUNDER/Todos/`:
-```markdown
----
-assigned_to: "[[Org Chart/FOUNDER/IDENTITY]]"
-priority: P0
-status: todo
-created_at: "2026-02-07T00:10:00Z"
----
+If between reading and claiming, another agent claims the lock:
+- Stop immediately
+- Exit silently
+- This is normal, not an error
 
-# TODO: Brief description
+### Worker Profile Missing
 
-**Escalation from:** [[Org Chart/YOUR-ROLE/IDENTITY]]
-**Active Task:** [[Tasks/TASK-XXX]]
-**Reason:** Why human intervention needed
+If `current_worker` references a role with no IDENTITY.md:
+1. Log error to `Notes/agent-errors-YYYY-MM-DD.md`
+2. Set `current_worker: "[[Org Chart/CEO/IDENTITY]]"`
+3. Release lock
+4. CEO will handle on next run
 
-## Context
-Full description of the situation.
+### Task File Missing
 
-## Options
-1. Option A
-2. Option B
+If `active_task` references a non-existent file:
+1. Log error to `Notes/agent-errors-YYYY-MM-DD.md`
+2. Clear `active_task: ""`
+3. Release lock
+4. CEO will activate new task on next run
 
-## Recommendation
-What you think should happen.
-```
+### No Current Worker Determined
+
+If you cannot determine who should work:
+1. Default to CEO: `current_worker: "[[Org Chart/CEO/IDENTITY]]"`
+2. Add note to task Work Log explaining ambiguity
+3. Release lock
 
 ---
 
-## 🎯 Single-Task Workflow Summary
+## 🎯 WORKFLOW SUMMARY
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│  WORK-LOCK.active_task controls what everyone works on     │
+│                    CRON RUNS EVERY 5 MIN                     │
 └─────────────────────────────────────────────────────────────┘
                               │
-        ┌─────────────────────┼─────────────────────┐
-        ▼                     ▼                     ▼
-   ┌─────────┐          ┌──────────┐          ┌──────────┐
-   │  todo   │          │ in-prog  │          │  review  │
-   │(CEO     │          │(employee│          │(CEO      │
-   │picks)   │          │works)    │          │verifies) │
-   └────┬────┘          └────┬─────┘          └────┬─────┘
-        │                    │                     │
-        │                    │                     ▼
-        │                    │               ┌──────────┐
-        │                    │               │completed │
-        │                    │               │(archive) │
-        │                    │               └──────────┘
-        │                    │                     │
-        │                    ▼                     │
-        │              ┌──────────┐                │
-        └─────────────▶│ next     │◀───────────────┘
-                       │ employee │
-                       └──────────┘
-```
-
-**Key Rules:**
-- Only ONE `active_task` at a time
-- Only ONE employee works at a time
-- Task persists until 100% complete
-- CEO verifies and clears `active_task`
-- Then next task begins
-
----
-
-## ✅ Pre-Flight Checklist
-
-Before claiming lock, verify:
-- [ ] I know my role (CEO/CTO/CMO/PM/ENG-FE/ENG-BE)
-- [ ] I can access the vault at ~/obsidian/pinkbeam/
-- [ ] I understand single-task, single-worker system
-- [ ] I understand the 1-hour maximum shift duration
-
-Before releasing lock, verify:
-- [ ] I updated the active task file with Work Log entry
-- [ ] I checked off completed items
-- [ ] I set `task.current_worker` to next role (or CEO if done)
-- [ ] I triggered the next employee
-- [ ] Lock status is `unlocked`
-- [ ] Employee/task/start fields are cleared (but NOT `active_task`)
-
----
-
-## ⏱️ Maximum Shift Duration Rule
-
-**No shift should exceed 1 hour of continuous work.**
-
-### Why This Limit?
-- Forces regular handoffs (better documentation)
-- Prevents starvation of other work
-- Reduces risk of lost work on crashes
-- Keeps Work Log current and useful
-
-### If You Need More Time
-
-**Option A: Hand Off**
-1. Document progress thoroughly in Work Log
-2. Check off completed items
-3. Set `current_worker` to next role (or same role for next shift)
-4. Release lock
-5. Trigger same employee for next shift
-
-**Option B: Extend (Exception)**
-1. Document in Work Log why extension needed
-2. Note expected completion time
-3. Continue working
-4. If approaching 2-hour hard limit, MUST hand off
-
-### Hard Limits
-| Duration | Action |
-|----------|--------|
-| 1 hour | Preferred maximum — hand off recommended |
-| 2 hours | Absolute maximum — MUST hand off or release lock |
-| 2+ hours | Other employees may force-release the lock |
-
----
-
-## 📊 Lock Audit Trail
-
-Every lock acquisition/release should be traceable.
-
-### What to Log
-
-When you acquire the lock, the Work Log entry should include:
-```markdown
-### 2026-02-07 [[Org Chart/ROLE/IDENTITY]]
-**Lock acquired:** {timestamp}
-**Task:** [[Tasks/TASK-XXX]]
-**Intent:** Brief description of planned work
-```
-
-When you release the lock:
-```markdown
-**Lock released:** {timestamp}
-**Duration:** XX minutes
-**Completed:** What was done
-**Next:** Who should work next
-```
-
-### Lock Recovery Log
-
-If you recover a stuck lock, document in:
-`Notes/lock-recovery-YYYY-MM-DD.md`
-
-```markdown
-# Lock Recovery — 2026-02-07
-
-**Recovered by:** [[Org Chart/ROLE/IDENTITY]]
-**Original holder:** [[Org Chart/OTHER-ROLE/IDENTITY]]
-**Lock held for:** X hours
-**Last activity:** Timestamp from task Work Log
-**Action taken:** Released lock, triggered X, etc.
-**Task state:** In progress / Abandoned / Blocked
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│  READ WORK-LOCK.md                                          │
+│  • Check status                                             │
+│  • Check employee                                           │
+│  • Check active_task                                        │
+└─────────────────────────────────────────────────────────────┘
+                              │
+              ┌───────────────┼───────────────┐
+              ▼               ▼               ▼
+        ┌─────────┐     ┌──────────┐    ┌──────────┐
+        │ LOCKED  │     │ UNLOCKED │    │ UNLOCKED │
+        │         │     │ no task  │    │ has task │
+        └────┬────┘     └────┬─────┘    └────┬─────┘
+             │               │               │
+             ▼               ▼               ▼
+        ┌─────────┐     ┌──────────┐    ┌──────────┐
+        │  STOP   │     │ CEO only │    │ DISPATCH │
+        │ (exit)  │     │ Activate │    │ Worker   │
+        └─────────┘     └──────────┘    └────┬─────┘
+                                             │
+                              ┌──────────────┼──────────────┐
+                              ▼              ▼              ▼
+                        ┌─────────┐    ┌─────────┐   ┌─────────┐
+                        │ REVIEW  │    │  WORK   │   |  CEO    |
+                        │ needed  │    │ in prog │   | verify  |
+                        └────┬────┘    └────┬────┘   └────┬────┘
+                             │              │             │
+                             └──────────────┴─────────────┘
+                                            │
+                                            ▼
+                              ┌─────────────────────────────┐
+                              │    CLAIM LOCK FOR ROLE      │
+                              │    (atomic check-and-claim) │
+                              └─────────────────────────────┘
+                                            │
+                                            ▼
+                              ┌─────────────────────────────┐
+                              │  LOAD IDENTITY + TOOLS      │
+                              │  EXECUTE TASK               │
+                              │  DOCUMENT PROGRESS          │
+                              │  DETERMINE NEXT STATE       │
+                              └─────────────────────────────┘
+                                            │
+                                            ▼
+                              ┌─────────────────────────────┐
+                              │      RELEASE LOCK           │
+                              │   (preserve active_task)    │
+                              └─────────────────────────────┘
+                                            │
+                                            ▼
+                              ┌─────────────────────────────┐
+                              │      SHIFT COMPLETE         │
+                              │    (next run in ~5 min)     │
+                              └─────────────────────────────┘
 ```
 
 ---
 
-## 🎯 Success Criteria for a Shift
+## 📊 SUCCESS CRITERIA
 
-A successful shift means:
-1. ✅ Lock acquired and released properly
-2. ✅ Company context loaded
-3. ✅ Self (identity + tools) loaded
-4. ✅ Active task identified and worked
-5. ✅ Progress documented in task Work Log
-6. ✅ Checklist items checked off
-7. ✅ Next worker assigned (or handed to CEO)
-8. ✅ Next employee triggered
-
----
-
-## 🔄 Future-Proofing: Multi-Task Mode
-
-**When we enable multi-tasking later:**
-
-1. Remove single-task constraint from AGENTS.md
-2. Change `active_task` to `active_tasks[]` (array)
-3. Update WORK-LOCK to track multiple concurrent workers
-4. Each employee picks from available tasks
-5. CEO coordinates priority queue
-
-**For now: One task. One worker. Complete focus.**
+A successful shift:
+1. ✅ Lock handled correctly (claimed, used, released)
+2. ✅ Correct worker determined and dispatched
+3. ✅ Identity and tools loaded
+4. ✅ Task progressed (even incrementally)
+5. ✅ Work Log updated
+6. ✅ Next state clearly documented
+7. ✅ Lock released properly
 
 ---
 
-*Shift Protocol v2.0 — Single task, complete focus, verified completion.*
+## ⚙️ CRON CONFIGURATION
+
+**Single Job:** `pbb-shift`
+
+```json
+{
+  "name": "pbb-shift",
+  "schedule": {
+    "kind": "every",
+    "everyMs": 300000  // 5 minutes
+  },
+  "sessionTarget": "isolated",
+  "payload": {
+    "kind": "agentTurn",
+    "message": "Read ~/obsidian/pinkbeam/AGENTS.md and follow the shift protocol exactly."
+  },
+  "delivery": {
+    "mode": "announce"
+  }
+}
+```
+
+**No role-specific jobs. No complex handoff logic. Just one job that figures out who should work.**
+
+---
+
+## 🔄 FUTURE ENHANCEMENTS
+
+**Multi-Task Mode (Future):**
+- Change `active_task` (string) → `active_tasks[]` (array)
+- Multiple workers can claim different tasks simultaneously
+- Each task has its own lock or use task-level locking
+
+**Priority Inheritance:**
+- P0 tasks can preempt P1/P2 tasks
+- CEO can force-switch active tasks
+
+**Worker Pools:**
+- Multiple agents per role (ENG-FE-1, ENG-FE-2)
+- Load balancing across workers
+
+**For now: One task, one worker, simple and reliable.**
+
+---
+
+*Shift Protocol v3.0 — Simplified, robust, future-proof.*

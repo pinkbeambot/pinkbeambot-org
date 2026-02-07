@@ -1,377 +1,345 @@
-# CRON-SYSTEM — Pink Beam Agent Cron Jobs
+# CRON-SYSTEM.md — Pink Beam Agent Scheduling
 
-**Cron jobs for triggering employee shifts at Pink Beam.**
-
----
-
-## 🕐 Available Cron Jobs
-
-| Job Name | Role | Purpose | Status |
-|----------|------|---------|--------|
-| `pbb-ceo-shift` | CEO | Strategic execution, task activation, verification | Ready |
-| `pbb-cto-shift` | CTO | Technical architecture, code review, mentorship | Ready |
-| `pbb-cmo-shift` | CMO | Marketing, growth, brand, copy | Ready |
-| `pbb-eng-fe-shift` | ENG-FE | Frontend, UI/UX, design system | Ready |
-| `pbb-eng-be-shift` | ENG-BE | Backend, APIs, infrastructure | Ready |
-| `pbb-dispatcher` | System | **Auto-triggers next worker every 10 min** | ✅ **Enabled** |
-| `pbb-monitor` | System | Auto-recovery from failed handoffs (every 5 min) | Disabled |
+**Last Updated:** 2026-02-07  
+**Version:** 3.0 — Simplified Single-Cron Architecture
 
 ---
 
-## 🚀 How to Trigger a Shift Manually
+## 🎯 Overview
 
-These jobs are set to run in the far future (2036) so they don't auto-trigger. You run them manually when needed.
+Pink Beam uses a **single-cron, multi-role dispatch system**. One cron job runs every 5 minutes, checks the work state, and dispatches the appropriate worker.
 
-### Command
+**Previous Architecture:** Multiple cron jobs (one per role) with complex handoff chains  
+**Current Architecture:** One cron job that determines who should work
 
-```bash
-cron run pbb-{ROLE}-shift
+---
+
+## 🏗️ Architecture
+
+### Single Job: `pbb-shift`
+
 ```
-
-### Examples
-
-```bash
-# Trigger CEO to activate a task from the queue
-cron run pbb-ceo-shift
-
-# Trigger CTO to work on technical implementation
-cron run pbb-cto-shift
-
-# Trigger CMO for marketing copy or strategy
-cron run pbb-cmo-shift
-
-# Trigger Frontend Engineer for UI implementation
-cron run pbb-eng-fe-shift
-
-# Trigger Backend Engineer for API/infrastructure work
-cron run pbb-eng-be-shift
-```
-
----
-
-## 📋 What Each Job Does
-
-When triggered, each job:
-
-1. **Spawns an isolated agent session** (no memory from other sessions)
-2. **Tells the agent their role** (CEO, CTO, CMO, ENG-FE, ENG-BE)
-3. **Points them to AGENTS.md** as their boot sequence
-4. **The agent then:**
-   - Reads AGENTS.md (shift protocol)
-   - Acquires the work lock
-   - Loads company context (README.md)
-   - Loads their identity (Org Chart/{ROLE}/IDENTITY.md)
-   - Loads their tools (Org Chart/{ROLE}/TOOLS.md)
-   - Checks for the active task
-   - Executes work on that task
-   - Reports back when complete
-
----
-
-## 🔄 Typical Workflow
-
-### Starting Work on a New Task
-
-```bash
-# 1. CEO activates task from queue
-cron run pbb-ceo-shift
-
-# 2. CEO sets active_task and triggers first worker
-# (e.g., if task needs ENG-FE first)
-
-# 3. First worker runs
-cron run pbb-eng-fe-shift
-
-# 4. When ENG-FE hands off to ENG-BE, they trigger:
-cron run pbb-eng-be-shift
-
-# 5. When task is complete, worker triggers CEO for verification:
-cron run pbb-ceo-shift
-
-# 6. CEO verifies, archives task, clears active_task, triggers next:
-cron run pbb-cto-shift  # (or whoever works next task)
+┌─────────────────────────────────────────────────────────────┐
+│  pbb-shift runs every 5 minutes (300,000 ms)                │
+│  Session: isolated (runs in background)                     │
+│  Delivery: announce to webchat                              │
+└─────────────────────────────────────────────────────────────┘
+                            │
+                            ▼
+              ┌─────────────────────────────┐
+              │   Read WORK-LOCK.md         │
+              │   Determine work state      │
+              └─────────────────────────────┘
+                            │
+            ┌───────────────┼───────────────┐
+            ▼               ▼               ▼
+      ┌─────────┐    ┌──────────┐   ┌──────────┐
+      │ LOCKED  │    │ UNLOCKED │   │ UNLOCKED │
+      │         │    │ no task  │   │ has task │
+      └────┬────┘    └────┬─────┘   └────┬─────┘
+           │              │              │
+           ▼              ▼              ▼
+      ┌─────────┐   ┌──────────┐  ┌──────────┐
+      │  EXIT   │   │ Activate │  │ Dispatch │
+      │ (wait)  │   │  Task    │  │  Worker  │
+      └─────────┘   │  (CEO)   │  │          │
+                    └──────────┘  └────┬─────┘
+                                       │
+                                       ▼
+                         ┌─────────────────────────┐
+                         │   Claim Lock            │
+                         │   Load Identity         │
+                         │   Execute Task          │
+                         │   Document Progress     │
+                         │   Release Lock          │
+                         └─────────────────────────┘
 ```
 
 ---
 
-## 🧹 Cleaning Up Zombie Jobs
+## 📋 Job Configuration
 
-When a task completes, the CEO should kill all cron jobs before archiving:
+### pbb-shift
 
-```bash
-# List all cron jobs
-cron list
+| Property | Value |
+|----------|-------|
+| **ID** | `9f2e5825-e17c-427f-96e5-dfa0784f8edf` |
+| **Schedule** | Every 5 minutes (300,000 ms) |
+| **Session** | Isolated (background) |
+| **Target** | `main` agent |
+| **Delivery** | Announce to webchat |
 
-# Remove all Pink Beam shift jobs
-cron remove pbb-ceo-shift
-cron remove pbb-cto-shift
-cron remove pbb-cmo-shift
-cron remove pbb-eng-fe-shift
-cron remove pbb-eng-be-shift
+### Schedule Logic
 
-# Recreate them fresh for next task (if needed)
-# (See vault documentation for recreation)
+```json
+{
+  "kind": "every",
+  "everyMs": 300000
+}
 ```
+
+**Why 5 minutes?**
+- Frequent enough for responsive handoffs
+- Not so frequent it wastes compute
+- Allows ~12 attempts per hour for stuck locks
 
 ---
 
-## ⚙️ Job Configuration Details
+## 🔒 Work Lock System
 
-Each job is configured with:
+### Lock File
+
+**Location:** `~/obsidian/pinkbeam/WORK-LOCK/WORK-LOCK.md`
 
 ```yaml
-name: pbb-{ROLE}-shift
-schedule:
-  kind: at
-  at: "2036-02-07T00:00:00Z"  # Far future — manual trigger only
-sessionTarget: isolated        # Clean session, no memory
-enabled: true
-deleteAfterRun: true           # Clean up after execution
-payload:
-  kind: agentTurn
-  message: "You are the {ROLE}... Read ~/obsidian/pinkbeam/AGENTS.md..."
+---
+status: unlocked|locked
+employee: ""|"[[Org Chart/ROLE/IDENTITY]]"
+active_task: ""|"[[Tasks/TASK-XXX]]"
+started_at: ""|"2026-02-07T10:00:00Z"
+---
 ```
 
-### Key Settings
+### Lock States
 
-- **`sessionTarget: isolated`** — Each shift runs in a fresh session with no memory of previous shifts
-- **`deleteAfterRun: true`** — Jobs clean up after running (but we keep them for reuse)
-- **`enabled: true`** — Jobs are ready to run
-- **Manual trigger via `cron run`** — No auto-execution
+| Status | Employee | Task | Meaning | Action |
+|--------|----------|------|---------|--------|
+| `locked` | Any | Any | Work in progress | Exit silently |
+| `unlocked` | Empty | Empty | Idle, need task | CEO activates |
+| `unlocked` | Empty | Exists | Ready for worker | Dispatch worker |
+
+### Atomic Claim Protocol
+
+1. Read lock
+2. Verify still `unlocked`
+3. Write `locked` + employee + timestamp
+4. If write fails (race condition), exit
 
 ---
 
-## 📝 Job Payload (What the Agent Receives)
+## 👷 Worker Dispatch Logic
 
-Each job sends this message to the agent:
+### Determining Who Should Work
 
-```
-You are the {ROLE} of Pink Beam. Your role is {ROLE}.
-Read ~/obsidian/pinkbeam/AGENTS.md and follow the shift protocol exactly.
-Start by acquiring the work lock, then execute the active task.
-Report back when your shift is complete or if you need to hand off to another employee.
-```
+The agent reads the active task file and checks:
 
-The agent then follows the AGENTS.md protocol:
-1. Check WORK-LOCK
-2. Load context
-3. Work on active task
-4. Document progress
-5. Release lock
+1. **Task Status = `review`** → Dispatch reviewer from `phase_reviews`
+2. **`current_worker` set** → Dispatch that worker
+3. **`next_worker` set** → Update `current_worker`, dispatch
+4. **Phase reviews** → Find first `todo`/`in-progress` phase, dispatch worker
+5. **Task complete** → Dispatch CEO for verification
 
----
+### Worker Roles
 
-## 🎯 Best Practices
-
-### When to Trigger
-
-**Trigger an employee when:**
-- You're handing off the active task to them
-- They need to review your work
-- Their work blocks your progress
-- CEO activates a new task and needs to trigger the first worker
-
-**Don't trigger randomly** — Only when there's actual work to do.
-
-### Single-Task Rule
-
-Only ONE employee should be working at a time (enforced by WORK-LOCK). If you trigger an employee while another holds the lock, they'll see the lock is taken and exit silently.
-
-### After Task Completion
-
-When CEO verifies and completes a task:
-1. Kill all cron jobs (see cleanup section above)
-2. Clear WORK-LOCK.active_task
-3. Recreate cron jobs if needed (for next task cycle)
+| Role | Directory | Purpose |
+|------|-----------|---------|
+| CEO | `Org Chart/CEO/` | Strategy, activation, verification |
+| CTO | `Org Chart/CTO/` | Technical architecture, code review |
+| CMO | `Org Chart/CMO/` | Marketing, copy, brand |
+| ENG-FE | `Org Chart/ENG-FE/` | Frontend development |
+| ENG-BE | `Org Chart/ENG-BE/` | Backend development |
 
 ---
 
-## 🔄 Resilient Handoff System
+## 📁 Key Files
 
-Handoffs can fail due to network issues (gateway timeouts). The system has multiple safeguards:
-
-### Understanding Cron Timeouts
-
-When you run `cron run pbb-{ROLE}-shift`, you may see:
-- `gateway timeout` - Network hiccup
-- `delivery target missing` - Isolated session can't receive response
-
-**These are OK!** The job **still runs**. The timeout is just the response channel failing.
-
-### 1. Retry Protocol (Built into AGENTS.md)
-
-When handing off, agents retry 3 times:
-```bash
-# Attempt 1
-cron run pbb-{ROLE}-shift
-sleep 10  # Wait for job to start
-
-# Check WORK-LOCK - if still showing YOU, retry
-cron run pbb-{ROLE}-shift
-sleep 5
-
-# Attempt 3
-cron run pbb-{ROLE}-shift
-```
-
-**After retries:** Document in Work Log and release lock. The job ran even if you got timeouts.
-
-### 2. Safety Flag (next_worker field)
-
-Tasks have a `next_worker` field that's set BEFORE attempting handoff:
-```yaml
-next_worker: "[[Org Chart/ENG-FE/IDENTITY]]"  # Who should work next
-```
-
-If handoff fails, this flag remains for recovery.
-
-### 3. Auto-Recovery Monitor (pbb-monitor)
-
-Enable automatic recovery:
-```bash
-# Enable the monitor (runs every 5 minutes)
-cron update pbb-monitor --enabled true
-```
-
-The monitor checks:
-- Is WORK-LOCK unlocked but active_task set?
-- Is next_worker set but current_worker hasn't changed in >2 minutes?
-- If so, auto-triggers the next worker
-
-**To disable:**
-```bash
-cron update pbb-monitor --enabled false
-```
-
-### 4. Manual Recovery
-
-If automatic recovery fails, manually trigger:
-```bash
-cron run pbb-{ROLE}-shift
-```
+| File | Purpose |
+|------|---------|
+| `AGENTS.md` | Complete boot protocol for all agents |
+| `WORK-LOCK/WORK-LOCK.md` | Mutex for work coordination |
+| `Tasks/TASK-XXX.md` | Active task definition |
+| `Tasks/TASKS.md` | Task queue index |
+| `Org Chart/{ROLE}/IDENTITY.md` | Worker personality & authority |
+| `Org Chart/{ROLE}/TOOLS.md` | Worker capabilities |
 
 ---
 
-## 🎯 Automatic Dispatcher (pbb-dispatcher)
-
-The dispatcher runs **every 10 minutes** and automatically triggers the next worker.
-
-### How It Works
+## 🔄 Task Lifecycle
 
 ```
-Every 10 minutes:
-  Check WORK-LOCK
-  └─ If locked → Do nothing (someone is working)
-  └─ If unlocked + active_task set:
-       Read task file
-       Find current_worker / next_worker
-       Trigger that worker's cron job
-       Log the action
+todo → in-progress → review → completed
+        ↓              ↓
+     blocked       rejected
+        ↓              ↓
+     waiting      → in-progress
 ```
 
-### What the Dispatcher Does
+### State Transitions
 
-1. **Checks WORK-LOCK** — Is someone currently working?
-2. **Finds active task** — What's the current task?
-3. **Identifies next worker** — Who should work next?
-4. **Triggers worker** — Runs their cron job automatically
-5. **Logs action** — Records to `Logs/dispatcher-YYYY-MM-DD.md`
-
-### When Dispatcher Triggers Workers
-
-| Situation | Dispatcher Action |
-|-----------|-------------------|
-| Work complete, waiting for review | Triggers reviewer (CMO/CTO/CEO) |
-| Review approved, next phase ready | Triggers next phase worker |
-| Task just activated | Triggers first worker |
-| Someone working (lock held) | Does nothing |
-| No active task | Does nothing |
-
-### Dispatcher vs Monitor
-
-| Feature | Dispatcher | Monitor |
-|---------|-----------|---------|
-| Frequency | Every 10 min | Every 5 min |
-| Purpose | Keep work flowing | Recover from stuck handoffs |
-| When it triggers | Lock is free | Lock stuck >2 min |
-| Status | ✅ **Enabled** | Disabled |
-
-### Controlling the Dispatcher
-
-```bash
-# Check if running
-cron list | grep pbb-dispatcher
-
-# Disable if needed
-cron update pbb-dispatcher --enabled false
-
-# Re-enable
-cron update pbb-dispatcher --enabled true
-```
-
-### Dispatcher Logs
-
-Check what the dispatcher has done:
-```bash
-# View dispatcher log
-cat ~/obsidian/pinkbeam/Logs/dispatcher-2026-02-07.md
-```
+| From | To | Triggered By |
+|------|-----|--------------|
+| `todo` | `in-progress` | CEO activation |
+| `in-progress` | `review` | Worker submission |
+| `review` | `in-progress` | Rejection + feedback |
+| `review` | `completed` | CEO approval |
+| `in-progress` | `blocked` | Blocker identified |
+| `blocked` | `in-progress` | Blocker resolved |
 
 ---
 
-## 🔧 Troubleshooting
+## 🆘 Recovery Protocols
 
-### Job Not Found
+### Stuck Lock (> 2 hours)
 
-If a job was accidentally deleted:
+If `status: locked` and `started_at` > 2 hours ago:
 
-```bash
-# Recreate it (adjust role name)
-cron add --name pbb-{ROLE}-shift --at "2036-02-07T00:00:00Z" \
-  --message "You are the {ROLE} of Pink Beam..."
-```
-
-### Agent Not Responding
-
-If an agent session hangs:
-
-```bash
-# List active sessions
-sessions_list
-
-# Check session history
-sessions_history --sessionKey <key>
-
-# Send stop message if needed
-sessions_send <key> "STOP — session ended by admin"
-```
-
-### Lock Stuck
-
-If WORK-LOCK shows `status: locked` with old timestamp:
-
-1. Check if work was abandoned
-2. Document state in Notes
-3. Manually release lock:
+1. Check task Work Log for last activity
+2. Document in `Notes/lock-recovery-YYYY-MM-DD.md`
+3. Force release lock:
    ```yaml
-   ---
    status: unlocked
    employee: ""
-   active_task: ""
    started_at: ""
-   ---
    ```
+4. Next cron run dispatches appropriate worker
+
+### Missing Task File
+
+If `active_task` points to non-existent file:
+
+1. Log to `Notes/agent-errors-YYYY-MM-DD.md`
+2. Clear `active_task: ""`
+3. Release lock
+4. CEO activates new task on next run
+
+### Missing Worker Profile
+
+If `current_worker` references missing IDENTITY.md:
+
+1. Log error
+2. Default to CEO
+3. Release lock
+4. CEO handles on next run
 
 ---
 
-## 📁 Related Files
+## 🎛️ Management Commands
 
-- **Shift Protocol:** `~/obsidian/pinkbeam/AGENTS.md`
-- **Work Lock:** `~/obsidian/pinkbeam/WORK-LOCK/WORK-LOCK.md`
-- **Active Task:** Tracked in `WORK-LOCK.active_task`
-- **Task Queue:** `~/obsidian/pinkbeam/Tasks/TASKS.md`
-- **Employee Directories:** `~/obsidian/pinkbeam/Org Chart/{ROLE}/`
+### Check Cron Status
+
+```bash
+cron status
+cron list
+```
+
+### View Job Runs
+
+```bash
+cron runs pbb-shift
+```
+
+### Manual Trigger
+
+```bash
+cron run pbb-shift
+```
+
+⚠️ **Only run manually for debugging.** Normal operation is automatic.
+
+### Pause System
+
+To temporarily stop all automation:
+
+```bash
+cron update pbb-shift --enabled=false
+```
+
+### Resume System
+
+```bash
+cron update pbb-shift --enabled=true
+```
 
 ---
 
-*Cron System v1.0 — Manual triggering, isolated sessions, clean execution.*
+## 📊 Monitoring
+
+### Check Current State
+
+```bash
+# View lock
+cat ~/obsidian/pinkbeam/WORK-LOCK/WORK-LOCK.md
+
+# View active task
+cat ~/obsidian/pinkbeam/Tasks/TASK-001-pricing-marketing-implementation.md
+
+# View task queue
+cat ~/obsidian/pinkbeam/Tasks/TASKS.md
+```
+
+### View Run History
+
+```bash
+ls -la ~/.openclaw/cron/runs/
+cat ~/.openclaw/cron/runs/{job-id}.jsonl
+```
+
+### Log Files
+
+```bash
+tail -f /tmp/openclaw/openclaw-2026-02-07.log | grep -i "pbb-shift\|cron"
+```
+
+---
+
+## 🔮 Future Enhancements
+
+### Multi-Task Mode
+
+**Current:** `active_task: string`  
+**Future:** `active_tasks: string[]`
+
+- Multiple concurrent tasks
+- Worker pool per role
+- Task-level locking
+
+### Priority Preemption
+
+- P0 tasks can bump P1/P2 tasks
+- CEO force-switch capability
+- Graceful task suspension/resume
+
+### Worker Pools
+
+- ENG-FE-1, ENG-FE-2, etc.
+- Load balancing
+- Work stealing
+
+---
+
+## ❓ Troubleshooting
+
+### "No jobs running"
+
+Check: `cron list`  
+Fix: `cron run pbb-shift` (one-time) or check if job is enabled
+
+### "Lock stuck for hours"
+
+Check: `cat ~/obsidian/pinkbeam/WORK-LOCK/WORK-LOCK.md`  
+Fix: Force release following recovery protocol
+
+### "Task not progressing"
+
+Check: Task file Work Log section  
+Fix: May be blocked, waiting for review, or ambiguous next worker (defaults to CEO)
+
+### "Wrong worker dispatched"
+
+Check: Task file `current_worker`, `next_worker`, `phase_reviews`  
+Fix: Update fields to correct role
+
+---
+
+## ✅ Success Metrics
+
+| Metric | Target |
+|--------|--------|
+| Lock cycle time | < 2 hours max |
+| Task handoff latency | < 10 minutes (next cron run) |
+| Stuck lock rate | < 1% of shifts |
+| Agent crash recovery | Automatic within 2 hours |
+
+---
+
+*Simple, robust, future-proof.*
