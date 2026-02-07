@@ -554,8 +554,8 @@ The `🗂️ TASKS.md` file serves as the master index. Keep it updated.
 **Only ONE task can be active at a time.**
 
 | ID | Title | Status | Current Worker | Started |
-|----|-------|--------|----------------|---------|
-| [[TASK-001]] | Stripe Integration | in-progress | [[Org Chart/ENG-BE/IDENTITY]] | 2026-02-07 |
+|------|------------------------------------------|-----------|------------------|---------|
+| — | *No active task — CEO needs to activate* | — | — | — |
 
 ---
 
@@ -564,28 +564,24 @@ The `🗂️ TASKS.md` file serves as the master index. Keep it updated.
 Tasks ready to become active when current task completes.
 
 | ID | Title | Priority | Primary Owner | Est. Hours |
-|----|-------|----------|---------------|------------|
-| [[TASK-004]] | Implement Pricing & Marketing Strategy | P0 | [[Org Chart/CMO/IDENTITY]] | 24 |
-| [[TASK-042]] | Fix Gateway Timeout | P0 | [[Org Chart/CTO/IDENTITY]] | 4 |
-| [[TASK-015]] | Launch Page | P1 | [[Org Chart/CMO/IDENTITY]] | 12 |
-| [[TASK-023]] | Analytics Dashboard | P1 | [[Org Chart/CTO/IDENTITY]] | 16 |
+|------|------------------------------------------|----------|----------------------------------|------------|
+| [[TASK-001]] | Implement Pricing & Marketing Strategy | P0 | [[Org Chart/CMO/IDENTITY]] | 24 |
 
 ---
 
 ## 🚧 BLOCKED (On Hold)
 
 | ID | Title | Blocked By | Since |
-|----|-------|------------|-------|
-| [[TASK-056]] | Enterprise SSO | Waiting for Stripe | 2026-02-05 |
+|------|-------|------------|-------|
+| — | *No blocked tasks* | — | — |
 
 ---
 
 ## ✅ COMPLETED (Last 30 Days)
 
 | ID | Title | Completed | Verified By |
-|----|-------|-----------|-------------|
-| [[TASK-000]] | Repo Setup | 2026-02-05 | [[Org Chart/CEO/IDENTITY]] |
-| [[TASK-003]] | Design System | 2026-02-04 | [[Org Chart/CEO/IDENTITY]] |
+|------|-------|-----------|-------------|
+| — | *No completed tasks yet* | — | — |
 
 ---
 
@@ -594,8 +590,8 @@ Tasks ready to become active when current task completes.
 Cancelled tasks stay here for reference — not deleted.
 
 | ID | Title | Cancelled | Reason |
-|----|-------|-----------|--------|
-| [[TASK-XXX]] | Example Cancelled Task | 2026-02-07 | No longer needed / Pivoted |
+|------|-------|-----------|--------|
+| — | *No cancelled tasks* | — | — |
 
 ---
 
@@ -780,16 +776,16 @@ When CEO verifies a task:
 
 ## 🔗 Quick Reference
 
-| Action | How To |
-|--------|--------|
-| **Create task** | Copy template, save as `TASK-{NNN}-{name}.md`, set `status: todo`, add to QUEUE |
-| **Activate task** | CEO only: Set `WORK-LOCK.active_task`, `is_active: true`, trigger worker |
-| **Find work** | Read `WORK-LOCK.active_task` — that's the ONE task to work on |
-| **Start work** | Follow AGENTS.md: acquire lock, verify you're `current_worker`, execute |
-| **Handoff** | Update Work Log, set `current_worker` to next role, trigger them, release lock |
-| **Complete work** | Check all items, fill Completion Notes, set `status: review`, hand to CEO |
-| **Verify task** | CEO only: Review, approve/reject, archive if approved, clear `active_task` |
-| **Activate next** | CEO only: Pick from QUEUE, set new `active_task`, trigger first worker |
+| Action            | How To                                                                          |
+| ----------------- | ------------------------------------------------------------------------------- |
+| **Create task**   | Copy template, save as `TASK-{NNN}-{name}.md`, set `status: todo`, add to QUEUE |
+| **Activate task** | CEO only: Set `WORK-LOCK.active_task`, `is_active: true`, trigger worker        |
+| **Find work**     | Read `WORK-LOCK.active_task` — that's the ONE task to work on                   |
+| **Start work**    | Follow AGENTS.md: acquire lock, verify you're `current_worker`, execute         |
+| **Handoff**       | Update Work Log, set `current_worker` to next role, trigger them, release lock  |
+| **Complete work** | Check all items, fill Completion Notes, set `status: review`, hand to CEO       |
+| **Verify task**   | CEO only: Review, approve/reject, archive if approved, clear `active_task`      |
+| **Activate next** | CEO only: Pick from QUEUE, set new `active_task`, trigger first worker          |
 
 ### Emergency Contacts
 

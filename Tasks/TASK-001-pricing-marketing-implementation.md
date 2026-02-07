@@ -1,5 +1,5 @@
 ---
-id: TASK-004
+id: TASK-001
 title: Implement Pricing & Marketing Strategy Updates
 status: todo
 priority: P0
@@ -17,7 +17,7 @@ estimated_hours: 24
 actual_hours: 0
 dependencies: []
 blocks: []
-is_active: true
+is_active: false
 verified_by: ""
 tags:
   - frontend
@@ -27,7 +27,7 @@ tags:
   - copy
 ---
 
-# TASK-004: Implement Pricing & Marketing Strategy Updates
+# TASK-001: Implement Pricing & Marketing Strategy Updates
 
 ## 🎯 Objective
 Implement the comprehensive pricing and marketing strategy updates from the CMO's analysis to improve conversion rates, clarify messaging, and increase revenue per customer.
