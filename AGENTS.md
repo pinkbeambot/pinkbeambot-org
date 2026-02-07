@@ -10,8 +10,14 @@ This file is your boot sequence. Read it. Follow it. Do not deviate.
 
 **ONLY ONE EMPLOYEE WORKS AT A TIME.**
 
+**IMPORTANT FILE PATHS:**
+- Work Lock: `~/obsidian/pinkbeam/WORK-LOCK/WORK-LOCK.md`
+- Tasks: `~/obsidian/pinkbeam/Tasks/TASK-XXX.md`
+- Your Identity: `~/obsidian/pinkbeam/Org Chart/YOUR-ROLE/IDENTITY.md`
+- Your Tools: `~/obsidian/pinkbeam/Org Chart/YOUR-ROLE/TOOLS.md`
+
 ### 0.1 Read Current Lock Status
-Open `WORK-LOCK/WORK-LOCK.md` and check the YAML frontmatter:
+Open `~/obsidian/pinkbeam/WORK-LOCK/WORK-LOCK.md` and check the YAML frontmatter:
 
 ```yaml
 ---
@@ -33,12 +39,12 @@ active_task: ""  # Link to the ONE task currently being worked on
 - **If `status: unlocked`** → **Claim the lock and continue**
 
 ### 0.3 Claim the Lock
-Update `WORK-LOCK/WORK-LOCK.md`:
+Update `~/obsidian/pinkbeam/WORK-LOCK/WORK-LOCK.md`:
 
 ```yaml
 ---
 status: locked
-employee: "[[Org Chart/CTO/IDENTITY]]"  # Link to your IDENTITY file
+employee: "[[Org Chart/YOUR-ROLE/IDENTITY]]"  # Link to your IDENTITY file
 active_task: ""
 started_at: "2026-02-07T00:10:00Z"  # ISO 8601 timestamp
 ---
@@ -89,7 +95,7 @@ Open `Org Chart/{YOUR-ROLE}/TOOLS.md`
 
 **CRITICAL: Only ONE task is active at a time.**
 
-Check `WORK-LOCK/WORK-LOCK.md` field: `active_task`
+Check `~/obsidian/pinkbeam/WORK-LOCK/WORK-LOCK.md` field: `active_task`
 
 ### 3.1 Active Task Exists
 If `active_task: "[[Tasks/TASK-XXX-name]]"`:
@@ -136,7 +142,7 @@ When selecting from the QUEUE, use this priority order:
 #### Activation Steps
 1. Check `Tasks/` directory for `status: todo` tasks
 2. Select highest priority task using priority rules above
-3. Set `WORK-LOCK.active_task: "[[Tasks/TASK-XXX-name]]"`
+3. Set `active_task: "[[Tasks/TASK-XXX-name]]"` in ~/obsidian/pinkbeam/WORK-LOCK/WORK-LOCK.md
 4. Set `task.current_worker: "[[Org Chart/YOUR-ROLE/IDENTITY]]"` (if CEO work) or appropriate role
 5. Proceed to Step 4
 
@@ -149,7 +155,7 @@ When selecting from the QUEUE, use this priority order:
 ## ⚡ STEP 4: Execute the Active Task
 
 ### 4.1 Update Lock
-Update `WORK-LOCK/WORK-LOCK.md`:
+Update `~/obsidian/pinkbeam/WORK-LOCK/WORK-LOCK.md`:
 
 ```yaml
 ---
@@ -179,12 +185,19 @@ started_at: "2026-02-07T00:10:00Z"
 ## 📝 STEP 5: Document Progress
 
 ### 5.1 Update the Task File
-Open the active task file. Append to the Work Log section:
 
+**CRITICAL: Always APPEND to the END of the Work Log. Never prepend or insert in the middle.**
+
+The Work Log is chronological — newest entries go at the BOTTOM.
+
+**Correct way to add entry:**
+1. Scroll to the end of the file
+2. Find `## 📝 Work Log` section
+3. Append your entry AFTER the last entry (at the bottom)
+
+**Entry format:**
 ```markdown
-## Work Log
-
-### 2026-02-07 @YOUR-ROLE
+### 2026-02-07 [[Org Chart/YOUR-ROLE/IDENTITY]]
 **Completed:**
 - [x] Specific item finished
 - [x] Another item finished
@@ -193,10 +206,23 @@ Open the active task file. Append to the Work Log section:
 - [ ] Item still in progress (XX% complete)
 
 **Blockers:**
-- None / Waiting on X / Needs @FOUNDER decision
+- None / Waiting on X / Needs FOUNDER decision
 
 **Notes:**
 Any observations, decisions, or context for next shift.
+```
+
+**Example of correct Work Log structure:**
+```markdown
+## 📝 Work Log
+
+### 2026-02-07 [[Org Chart/CEO/IDENTITY]] — Task Activated
+- Lock acquired
+- Task activated from queue
+
+### 2026-02-07 [[Org Chart/ENG-FE/IDENTITY]] — Phase 1 Complete  ← NEWEST AT BOTTOM
+- Completed hero copy
+- Ready for review
 ```
 
 ### 5.2 Update Checklists
@@ -377,7 +403,7 @@ Template:
 ### 6.2 Release the Work Lock (CRITICAL)
 **THIS IS MANDATORY. NEVER FORGET.**
 
-Update `WORK-LOCK/WORK-LOCK.md`:
+Update `~/obsidian/pinkbeam/WORK-LOCK/WORK-LOCK.md`:
 
 ```yaml
 ---
