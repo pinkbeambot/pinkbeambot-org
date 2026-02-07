@@ -230,11 +230,62 @@ Understand:
 
 ### 4.1 Update Task Work Log
 
-**ALWAYS append to the END of the Work Log (chronological order).**
+**⚠️ CRITICAL: ALWAYS APPEND TO THE END — NEVER PREPEND, NEVER INSERT IN MIDDLE**
 
-Find `## 📝 Work Log` section, append at bottom:
+The Work Log is **chronological** — oldest at top, newest at bottom. New entries go **AFTER** all existing entries.
 
+**CORRECT — Append at bottom:**
 ```markdown
+## 📝 Work Log
+
+### 2026-02-07 [[Org Chart/CEO/IDENTITY]] — Task Activated  ← OLD ENTRY (top)
+- Lock acquired
+- Task activated from queue
+
+### 2026-02-07 [[Org Chart/ENG-FE/IDENTITY]] — Phase 1 Complete  ← OLD ENTRY
+- Completed hero copy
+- Ready for review
+
+### 2026-02-07 [[Org Chart/ENG-FE/IDENTITY]] — Phase 2 Complete  ← NEW ENTRY (bottom)
+**Completed:**
+- [x] FAQ expansion
+- [x] Testimonials section
+```
+
+**❌ WRONG — Do NOT prepend at top:**
+```markdown
+## 📝 Work Log
+
+### 2026-02-07 [[Org Chart/ENG-FE/IDENTITY]] — Phase 2 Complete  ← ❌ WRONG! Newest at top!
+**Completed:**
+- [x] FAQ expansion
+
+### 2026-02-07 [[Org Chart/CEO/IDENTITY]] — Task Activated  ← This should be at top (oldest)
+```
+
+**❌ WRONG — Do NOT insert in middle:**
+```markdown
+## 📝 Work Log
+
+### 2026-02-07 [[Org Chart/CEO/IDENTITY]] — Task Activated
+
+### 2026-02-07 [[Org Chart/ENG-FE/IDENTITY]] — Phase 2 Complete  ← ❌ WRONG! Inserted in middle!
+
+### 2026-02-07 [[Org Chart/ENG-FE/IDENTITY]] — Phase 1 Complete
+```
+
+---
+
+**HOW TO DO IT CORRECTLY:**
+
+1. Find the `## 📝 Work Log` section in the task file
+2. **Scroll to the VERY END of the file**
+3. Find the LAST entry (the one with the most recent date)
+4. **Add your new entry AFTER it** (add blank line, then your entry)
+
+**Template for new entry:**
+```markdown
+
 ### 2026-02-07 [[Org Chart/ROLE/IDENTITY]] — Shift Summary
 **Completed:**
 - [x] Specific item finished
@@ -250,6 +301,8 @@ Find `## 📝 Work Log` section, append at bottom:
 - Who should work next: [[Org Chart/NEXT-ROLE/IDENTITY]]
 - What they should do: Brief description
 ```
+
+**Remember:** The Work Log tells the story of what happened in ORDER. If you prepend or insert in the middle, the timeline becomes unreadable. **ALWAYS APPEND TO THE END.**
 
 ### 4.2 Update Checklists
 

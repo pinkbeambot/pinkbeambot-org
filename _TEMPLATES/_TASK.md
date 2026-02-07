@@ -38,7 +38,13 @@ tags: []
 
 ---
 
-## 📝 Work Log (Append Only — Newest at Bottom)
+## 📝 Work Log
+
+**⚠️ APPEND ONLY — NEVER PREPEND, NEVER INSERT IN MIDDLE**
+
+The Work Log is chronological. Oldest entries at top, newest at bottom. **Always add new entries at the BOTTOM of this section.**
+
+---
 
 ### [{{date:YYYY-MM-DD}} {{time:HH:mm}}] @Creator
 **Progress:** Task created

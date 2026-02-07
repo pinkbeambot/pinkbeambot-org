@@ -133,9 +133,58 @@ If you need a task:
 - Add/remove `contributors` as needed
 
 ### Append to Work Log
-**Work Log is append-only. Add new entries at the BOTTOM.**
 
-Format for each log entry:
+**⚠️ CRITICAL: APPEND ONLY — NEVER PREPEND, NEVER INSERT IN MIDDLE**
+
+The Work Log is **chronological** — oldest at top, newest at bottom. **Always append new entries at the BOTTOM.**
+
+**Why chronological?**
+- Tells the story of what happened in ORDER
+- Easy to see progression over time
+- Prevents confusion about when things happened
+
+**CORRECT — Newest at bottom:**
+```markdown
+## 📝 Work Log
+
+### [2026-02-07 10:00] @CEO — Task Activated
+- Lock acquired
+- Task activated from queue
+
+### [2026-02-07 11:00] @ENG-FE — Phase 1 Complete  ← OLDER
+- Completed hero copy
+
+### [2026-02-07 12:00] @ENG-FE — Phase 2 Complete  ← NEWEST (just added)
+- Completed FAQ expansion
+```
+
+**❌ WRONG — Do NOT put newest at top:**
+```markdown
+## 📝 Work Log
+
+### [2026-02-07 12:00] @ENG-FE — Phase 2 Complete  ← ❌ WRONG! Newest at top!
+
+### [2026-02-07 10:00] @CEO — Task Activated  ← This is oldest, should be at top
+```
+
+**❌ WRONG — Do NOT insert in middle:**
+```markdown
+## 📝 Work Log
+
+### [2026-02-07 10:00] @CEO — Task Activated
+
+### [2026-02-07 12:00] @ENG-FE — Phase 2 Complete  ← ❌ WRONG! Inserted in middle!
+
+### [2026-02-07 11:00] @ENG-FE — Phase 1 Complete
+```
+
+**HOW TO DO IT CORRECTLY:**
+1. Scroll to the end of the task file
+2. Find the `## 📝 Work Log` section
+3. Find the LAST entry (most recent timestamp)
+4. Add your new entry AFTER it
+
+**Format for each log entry:**
 ```markdown
 ### [YYYY-MM-DD HH:mm] @YourRole
 **Progress:** What you did
@@ -146,6 +195,8 @@ Format for each log entry:
 - If technical blocker → Tag relevant person with @mention
 **Notes:** Additional context
 ```
+
+**Remember: Scroll to bottom → Find last entry → Add after it.**
 
 ### Use @Mentions in Logs
 ```markdown
