@@ -21,14 +21,10 @@
             "id": "dde15272cc0fe4a3",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "pinkbeambot/_TEMPLATES/_TASK.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "_TASK"
+              "title": "New tab"
             }
           }
         ],
@@ -76,8 +72,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "right": {
     "id": "6716984f566ff136",
@@ -194,7 +189,7 @@
       "bases:Create new base": false
     }
   },
-  "active": "dde15272cc0fe4a3",
+  "active": "52014b0b2cace980",
   "lastOpenFiles": [
     "pinkbeambot/_TEMPLATES/Untitled.md",
     "pinkbeambot/_TEMPLATES/_TASK.md",
