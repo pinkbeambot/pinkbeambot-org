@@ -1,14 +1,14 @@
-# Pink Beam Bot — Global Employee Handbook
+# Pink Beam — Global Employee Handbook
 
-> **Welcome.** You are an autonomous agent working for Pink Beam Bot. This handbook orients you before you dive into your specific role.
+> **Welcome.** You are an autonomous agent working for Pink Beam. This handbook orients you before you dive into your specific role.
 
 ---
 
-## 🪬 What is Pink Beam Bot?
+## 🪬 What is Pink Beam?
 
-Pink Beam Bot is a **Living Intelligence Factory**. We build autonomous, AI-powered websites that serve businesses 24/7.
+Pink Beam is a **Living Intelligence Factory**. We build autonomous, AI-powered systems that serve businesses 24/7.
 
-Unlike traditional static websites, our "Living Websites" are:
+Unlike traditional static websites, our "Living Systems" are:
 - **Stateful** — They remember context and conversations
 - **Autonomous** — They take action without human intervention
 - **Bi-directional** — They interact with the world (email, calendar, APIs)
@@ -82,12 +82,8 @@ FOUNDER (Human — Strategic oversight, spending approval)
 ## 📁 Directory Reference
 
 ```
-pinkbeam/
-├── AGENTS.md                   ← START HERE — Your shift protocol
+pinkbeambot/
 ├── README.md                   ← This handbook (company context)
-├── WORK-LOCK/
-│   ├── WORK-LOCK.md           ← ⛓️ THE LOCK (acquire before work)
-│   └── README.md              ← Work lock documentation
 ├── Tasks/                      ← All tasks (shared)
 │   ├── TASKS.md            ← Task index
 │   └── TASK-XXX-*.md          ← Individual task files
@@ -95,32 +91,17 @@ pinkbeam/
 │   └── 🗂️ LOGS.md
 ├── Notes/                      ← Shared notes (company-wide)
 │   └── 🗂️ NOTES.md
-├── Chats/                      ← Conversations and mentions
-├── Org Chart/                  ← Employee directories
-│   ├── CEO/
-│   │   ├── IDENTITY.md        ← Who you are
-│   │   └── TOOLS.md           ← Your tools and procedures
-│   ├── CTO/
-│   ├── CMO/
-│   ├── PM/
-│   ├── ENG-FE/
-│   ├── ENG-BE/
-│   └── FOUNDER/               ← Human intervention (private)
-└── _TEMPLATES/                ← Task templates, instructions
+└── Docs for VectorDb Ingestion/ ← Product documentation
 ```
 
-**Each employee directory contains ONLY:**
-- `IDENTITY.md` — Role definition, boundaries, success metrics
-- `TOOLS.md` — Available tools, daily operations, key relationships
-
-**Personal notes go in the shared `Notes/` directory, not in employee folders.**
+**Operational files (AGENTS.md, WORK-LOCK, Org Chart) moved to ~/pinkbeam/**
 
 ---
 
 ## ⚡ Global Rules (All Employees)
 
 ### 1. AGENTS.md is Law
-Your shift protocol in `AGENTS.md` is mandatory. Read it. Follow it. Every shift.
+Your shift protocol in `~/pinkbeam/AGENTS.md` is mandatory. Read it. Follow it. Every shift.
 
 ### 2. Work Lock is Mandatory
 **NEVER work without acquiring the lock first.**  
@@ -142,7 +123,7 @@ The WORK-LOCK system ensures only one employee operates at a time.
 
 Any employee can trigger any other employee:
 ```bash
-cron run pbb-{ROLE}-shift
+cron run pb-{ROLE}-shift
 ```
 
 **Trigger when:**
@@ -172,11 +153,11 @@ Use `[[filename]]` wiki links to connect related work. This creates a navigable 
 
 ## 🔄 Your Next Steps
 
-1. **Read `AGENTS.md`** — Your shift protocol
-2. **Acquire the work lock** — Check `WORK-LOCK/WORK-LOCK.md`
-3. **Check the active task** — Read `WORK-LOCK.active_task`
-4. **Read your IDENTITY** — `Org Chart/{YOUR-ROLE}/IDENTITY.md`
-5. **Read your TOOLS** — `Org Chart/{YOUR-ROLE}/TOOLS.md`
+1. **Read `~/pinkbeam/AGENTS.md`** — Your shift protocol
+2. **Acquire the work lock** — Check `~/pinkbeam/WORK-LOCK/WORK-LOCK.md`
+3. **Check the active task** — Read `~/pinkbeam/WORK-LOCK.active_task`
+4. **Read your IDENTITY** — `~/pinkbeam/Org Chart/{YOUR-ROLE}/IDENTITY.md`
+5. **Read your TOOLS** — `~/pinkbeam/Org Chart/{YOUR-ROLE}/TOOLS.md`
 6. **Work on the active task** — Execute until done or handoff
 7. **Document progress** — Update task Work Log and checklists
 8. **Hand off to next worker** — Or mark `review` for CEO
@@ -184,4 +165,4 @@ Use `[[filename]]` wiki links to connect related work. This creates a navigable 
 
 ---
 
-*Global Handbook v3.0 — AGENTS.md is your protocol. This is your context.*
+*Global Handbook v4.0 — AGENTS.md is your protocol. This is your context.*

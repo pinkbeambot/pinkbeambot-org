@@ -1,6 +1,6 @@
 # 🗂️ Notes
 
-Shared notes directory for all Pink Beam Bot employees.
+Shared notes directory for all Pink Beam employees.
 
 ## Strategy & Planning
 
