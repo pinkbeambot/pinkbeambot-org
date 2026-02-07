@@ -13,6 +13,7 @@
 | `pbb-cmo-shift` | CMO | Marketing, growth, brand, copy | Ready |
 | `pbb-eng-fe-shift` | ENG-FE | Frontend, UI/UX, design system | Ready |
 | `pbb-eng-be-shift` | ENG-BE | Backend, APIs, infrastructure | Ready |
+| `pbb-dispatcher` | System | **Auto-triggers next worker every 10 min** | ✅ **Enabled** |
 | `pbb-monitor` | System | Auto-recovery from failed handoffs (every 5 min) | Disabled |
 
 ---
@@ -247,6 +248,73 @@ cron update pbb-monitor --enabled false
 If automatic recovery fails, manually trigger:
 ```bash
 cron run pbb-{ROLE}-shift
+```
+
+---
+
+## 🎯 Automatic Dispatcher (pbb-dispatcher)
+
+The dispatcher runs **every 10 minutes** and automatically triggers the next worker.
+
+### How It Works
+
+```
+Every 10 minutes:
+  Check WORK-LOCK
+  └─ If locked → Do nothing (someone is working)
+  └─ If unlocked + active_task set:
+       Read task file
+       Find current_worker / next_worker
+       Trigger that worker's cron job
+       Log the action
+```
+
+### What the Dispatcher Does
+
+1. **Checks WORK-LOCK** — Is someone currently working?
+2. **Finds active task** — What's the current task?
+3. **Identifies next worker** — Who should work next?
+4. **Triggers worker** — Runs their cron job automatically
+5. **Logs action** — Records to `Logs/dispatcher-YYYY-MM-DD.md`
+
+### When Dispatcher Triggers Workers
+
+| Situation | Dispatcher Action |
+|-----------|-------------------|
+| Work complete, waiting for review | Triggers reviewer (CMO/CTO/CEO) |
+| Review approved, next phase ready | Triggers next phase worker |
+| Task just activated | Triggers first worker |
+| Someone working (lock held) | Does nothing |
+| No active task | Does nothing |
+
+### Dispatcher vs Monitor
+
+| Feature | Dispatcher | Monitor |
+|---------|-----------|---------|
+| Frequency | Every 10 min | Every 5 min |
+| Purpose | Keep work flowing | Recover from stuck handoffs |
+| When it triggers | Lock is free | Lock stuck >2 min |
+| Status | ✅ **Enabled** | Disabled |
+
+### Controlling the Dispatcher
+
+```bash
+# Check if running
+cron list | grep pbb-dispatcher
+
+# Disable if needed
+cron update pbb-dispatcher --enabled false
+
+# Re-enable
+cron update pbb-dispatcher --enabled true
+```
+
+### Dispatcher Logs
+
+Check what the dispatcher has done:
+```bash
+# View dispatcher log
+cat ~/obsidian/pinkbeam/Logs/dispatcher-2026-02-07.md
 ```
 
 ---

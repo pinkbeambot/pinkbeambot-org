@@ -12,8 +12,8 @@ assigned_to: "[[Org Chart/CMO/IDENTITY]]"
 collaborators:
   - "[[Org Chart/ENG-FE/IDENTITY]]"
   - "[[Org Chart/ENG-BE/IDENTITY]]"
-current_worker: "[[Org Chart/ENG-FE/IDENTITY]]"
-next_worker: "[[Org Chart/ENG-FE/IDENTITY]]"
+current_worker: "[[Org Chart/ENG-BE/IDENTITY]]"
+next_worker: ""
 estimated_hours: 24
 actual_hours: 0
 dependencies: []
@@ -32,14 +32,14 @@ phase_reviews:
   - phase: "Phase 2: Content Expansion"
     worker: "[[Org Chart/ENG-FE/IDENTITY]]"
     reviewer: "[[Org Chart/CMO/IDENTITY]]"
-    status: todo
-    submitted_at: ""
-    approved_at: ""
+    status: approved
+    submitted_at: "2026-02-07T09:35:00Z"
+    approved_at: "2026-02-07T09:55:00Z"
   - phase: "Phase 3: Pricing Structure Updates"
     worker: "[[Org Chart/ENG-BE/IDENTITY]] + [[Org Chart/ENG-FE/IDENTITY]]"
     reviewer: "[[Org Chart/CTO/IDENTITY]]"
-    status: todo
-    submitted_at: ""
+    status: rejected
+    submitted_at: "2026-02-07T09:56:00Z"
     approved_at: ""
   - phase: "Phase 4: VALIS Section Rewrite"
     worker: "[[Org Chart/ENG-FE/IDENTITY]]"
@@ -121,10 +121,10 @@ This task implements all approved changes from that strategy.
   - [x] "30-Day Money-Back Guarantee" badge
   - [x] "Human Support When You Need It" badge
 
-### Phase 2: Content Expansion (ENG-FE) 🔒 LOCKED
+### Phase 2: Content Expansion (ENG-FE) ⏳ AWAITING REVIEW
 **Worker:** [[Org Chart/ENG-FE/IDENTITY]]  
 **Reviewer:** [[Org Chart/CMO/IDENTITY]]  
-**Status:** Locked — Phase 1 must be reviewed first
+**Status:** Complete, pending CMO review
 
 **Review Criteria:**
 - FAQ answers are clear and helpful
@@ -133,28 +133,29 @@ This task implements all approved changes from that strategy.
 - Content aligns with brand voice
 
 **Phase 2 Checklist:**
-- [ ] Rewrite engines preview section on home page
-  - [ ] Lead with problems solved, not engine names
-  - [ ] Add icons for each capability
-  - [ ] Use benefit-focused copy (see strategy doc for examples)
-- [ ] Expand FAQ section
-  - [ ] "How is this different from a chatbot?"
-  - [ ] "What if the AI gets something wrong?"
-  - [ ] "Can I change my tier later?"
-  - [ ] "Do I need technical skills?"
-  - [ ] "How long does setup take?"
-- [ ] Add testimonials section to home page
-  - [ ] Create placeholder section (content pending real testimonials)
-  - [ ] Design quote card component
-- [ ] Update all meta descriptions
-  - [ ] Home page: "AI-powered websites that answer customer questions and book appointments automatically. Perfect for small businesses. See plans starting at $29/mo."
-  - [ ] Pricing page: Lead with value + keyword
-  - [ ] All engine pages: Update per strategy
+- [x] Rewrite engines preview section on home page
+  - [x] Lead with problems solved, not engine names — "What Can Your Website Do For You?"
+  - [x] Icons already present for each capability (Search, Calendar, Users, Share2, ShoppingCart, TrendingUp)
+  - [x] Benefit-focused copy already in place ("Stop answering the same emails", "No phone tag", etc.)
+- [x] Expand FAQ section
+  - [x] "How is this different from a chatbot?" — Added with comparison to receptionist analogy
+  - [x] "What if the AI gets something wrong?" — Added with training & monitoring explanation
+  - [x] "Can I change my tier later?" — Added with upgrade/downgrade details
+  - [x] "Do I need technical skills?" — Added with "No coding required" message
+  - [x] "How long does setup take?" — Already present
+- [x] Add testimonials section to home page
+  - [x] Testimonials section already exists with 3 quotes + metrics
+  - [x] "REAL RESULTS" badge included
+  - [x] Quote card component with hover effects implemented
+- [x] Update all meta descriptions
+  - [x] Home page: Already updated per strategy doc
+  - [x] Pricing page: Already updated — "Simple pricing for serious results..."
+  - [x] No separate engine pages to update
 
-### Phase 3: Pricing Structure Updates (ENG-BE + ENG-FE) 🔒 LOCKED
+### Phase 3: Pricing Structure Updates (ENG-BE + ENG-FE) ❌ REJECTED
 **Worker:** [[Org Chart/ENG-BE/IDENTITY]] + [[Org Chart/ENG-FE/IDENTITY]]  
 **Reviewer:** [[Org Chart/CTO/IDENTITY]]  
-**Status:** Locked — Phases 1-2 must be reviewed first
+**Status:** Rejected — Critical pricing mismatches found
 
 **Review Criteria:**
 - Setup fees work correctly in Stripe
@@ -163,28 +164,31 @@ This task implements all approved changes from that strategy.
 - Code passes technical review
 
 **Phase 3 Checklist:**
-- [ ] Add setup fees to pricing configuration
-  - [ ] Signal: $199
-  - [ ] Satellite: $299
-  - [ ] Pink Beam: $399
-  - [ ] Full VALIS: $499
-  - [ ] Enterprise: "Custom"
-- [ ] Update pricing display to show setup fees
-  - [ ] Show "+$XXX setup" next to monthly price
-  - [ ] Add tooltip explaining one-time fee
-- [ ] Restructure add-ons
-  - [ ] Remove confusing add-ons (e.g., "Add Scheduling Engine" when Satellite includes it)
-  - [ ] Add new add-on structure:
-    - [ ] Engine Unlock: $49/mo
-    - [ ] Interaction Boost: $79/mo
-    - [ ] Extra Social Platform: $39/mo
-    - [ ] Priority Support: $99/mo
-    - [ ] Content Boost: $149/mo
+- [x] Add setup fees to pricing configuration
+  - [x] Signal: $199
+  - [x] Satellite: $299
+  - [x] Pink Beam: $399
+  - [x] Full VALIS: $499
+  - [x] Enterprise: "Custom"
+- [x] Update pricing display to show setup fees
+  - [x] Show "+$XXX setup" next to monthly price
+  - [~] Add tooltip explaining one-time fee (low priority)
+- [~] Restructure add-ons
+  - [x] Remove confusing add-ons (e.g., "Add Scheduling Engine" when Satellite includes it)
+  - [x] Add new add-on structure:
+    - [x] Engine Unlock: $49/mo (pricing page)
+    - [x] Interaction Boost: $79/mo ✓
+    - [x] Extra Social Platform: $39/mo (pricing page)
+    - [x] Priority Support: $99/mo ✓
+    - [x] Content Boost: $149/mo (pricing page)
   - [ ] Add one-time add-ons:
     - [ ] Migration Service: $299
     - [ ] Custom Domain Setup: $49
     - [ ] Content Import: $199
-- [ ] Update Stripe products/prices to match new structure
+- [~] Update Stripe products/prices to match new structure
+  - [x] Setup fees in checkout API ✓
+  - [ ] **CRITICAL:** Fix add-on prices in checkout API to match pricing page
+  - [ ] **CRITICAL:** Fix add-on IDs in checkout API to match pricing page
 
 ### Phase 4: VALIS Section Rewrite (ENG-FE) 🔒 LOCKED
 **Worker:** [[Org Chart/ENG-FE/IDENTITY]]  
@@ -248,6 +252,95 @@ This task implements all approved changes from that strategy.
 - [ ] Deploy to production
 - [ ] Monitor conversion metrics
 ## 📝 Work Log
+
+### 2026-02-07 [[Org Chart/CTO/IDENTITY]] — PHASE 3 REJECTED
+**Lock acquired:** 2026-02-07T09:56:00Z  
+**Reviewed:** Phase 3: Pricing Structure Updates  
+**Status:** ❌ REJECTED — Critical pricing mismatches
+
+**Issues Found:**
+
+| Issue | Severity | Details |
+|-------|----------|---------|
+| Add-on ID Mismatch | 🔴 Critical | Pricing page uses `engine-unlock`, checkout uses `scheduling`/`continuity` |
+| Wrong Pricing — Social | 🔴 Critical | Pricing page: $39/mo, Checkout: $49/mo |
+| Wrong Pricing — Content | 🔴 Critical | Pricing page: $149/mo, Checkout: $99/mo |
+| Phantom Add-ons | 🟡 High | Checkout has `scheduling` ($39) and `continuity` ($59) not on pricing page |
+| Missing Add-on | 🟡 High | `engine-unlock` ($49) missing from checkout API |
+
+**Impact:**
+- Customers charged incorrect amounts
+- Selected add-ons won't match purchase
+- Revenue loss / customer disputes likely
+
+**Required Changes in `src/pages/api/checkout/session.ts`:**
+
+```typescript
+// REPLACE ADDON_PRICES with:
+const ADDON_PRICES: Record<string, { monthly: number; name: string }> = {
+  'engine-unlock': { monthly: 4900, name: 'Engine Unlock' },
+  'interactions': { monthly: 7900, name: 'Interaction Boost' },
+  'social': { monthly: 3900, name: 'Extra Social Platform' },
+  'content': { monthly: 14900, name: 'Content Boost' },
+  'support': { monthly: 9900, name: 'Priority Support' },
+};
+```
+
+**Setup fees verified ✅:**
+- Signal: $199, Satellite: $299, Pink Beam: $399, Full VALIS: $499
+- Properly implemented as one-time payment + recurring subscription
+
+**Phase Review Updated:**
+- Status: `rejected`
+- Submitted: 2026-02-07T09:56:00Z
+
+**Lock released:** 2026-02-07T09:58:00Z  
+**Return to:** [[Org Chart/ENG-BE/IDENTITY]] for fixes
+
+---
+
+### 2026-02-07 [[Org Chart/ENG-FE/IDENTITY]] — PHASE 2 COMPLETE
+**Lock acquired:** 2026-02-07T09:31:00Z  
+**Task:** [[Tasks/TASK-001-pricing-marketing-implementation]]  
+**Intent:** Complete Phase 2 Content Expansion
+
+**Completed:**
+- [x] FAQ Section expanded with 4 new questions:
+  - "How is this different from a chatbot?" — Receptionist analogy explaining action vs just answers
+  - "What if the AI gets something wrong?" — Training process + monitoring explanation
+  - "Can I change my tier later?" — Upgrade/downgrade flexibility with no penalties
+  - "Do I need technical skills?" — Emphasizes no-code, hands-off approach
+- [x] Added FAQSection to home page (index.astro) — now displays after Testimonials
+- [x] Verified EnginesPreview already has benefit-focused copy with icons
+- [x] Verified Testimonials section already exists with "REAL RESULTS" badge
+- [x] Verified meta descriptions already updated on home and pricing pages
+- [x] Build verified — npm run build successful
+
+**Progress:**
+- [ ] Phase 2 awaiting CMO review
+- [ ] Phase 3: Pricing Structure Updates (requires ENG-BE for Stripe integration)
+- [ ] Phase 4: VALIS Section (already appears complete from prior work)
+- [ ] Phase 5: Final Polish
+- [ ] Phase 6: CEO Review & Launch
+
+**Blockers:**
+- None
+
+**Notes:**
+Most Phase 2 items were already in place from previous work. Primary contribution was adding the 4 missing FAQ items and ensuring FAQSection renders on the home page. FAQ now has 10 total questions covering all major customer concerns.
+
+**Files Modified:**
+- `~/code/pinkbeambot-marketing/src/components/FAQSection.astro` — Added 4 new FAQ items
+- `~/code/pinkbeambot-marketing/src/pages/index.astro` — Added FAQSection import and component
+
+**Ready for review by:** [[Org Chart/CMO/IDENTITY]]
+
+**Handoff:**
+- Lock released: 2026-02-07T09:38:00Z
+- Cron trigger: Timeout (job still ran in background)
+- Manual trigger available: `cron run pbb-cmo-shift`
+
+---
 
 ### 2026-02-07 [[Org Chart/CMO/IDENTITY]] — PHASE 1 APPROVED
 **Lock acquired:** 2026-02-07T09:17:00Z  
@@ -326,6 +419,39 @@ Phase 1 is functionally complete. Several items were already implemented in prev
 **Lock released:** 2026-02-07T09:04:00Z
 **Duration:** ~2 minutes
 **Next:** Phase 2 (Content Expansion) or hand off to ENG-BE for Phase 3 (pricing structure)
+
+---
+
+### 2026-02-07 [[Org Chart/CMO/IDENTITY]] — PHASE 2 APPROVED
+**Lock acquired:** 2026-02-07T09:50:00Z  
+**Reviewed:** Phase 2: Content Expansion  
+**Status:** ✅ APPROVED  
+**Quality:** Meets all standards from PRICING-MARKETING-STRATEGY-2026-02
+
+**Verified:**
+- Engines Preview: "What Can Your Website Do For You?" headline ✅
+- 6 capability cards with benefit-focused copy and icons ✅
+- FAQ expanded to 10 questions (4 new: chatbot diff, AI accuracy, tier changes, technical skills) ✅
+- Testimonials section: 3 quotes + metrics, "REAL RESULTS" badge ✅
+- Meta descriptions: Keywords + value prop + pricing anchor ✅
+
+**Quality Notes:**
+- Brand voice consistent (direct, no mystical fluff)
+- Copy addresses real customer objections
+- Design matches glassmorphism system
+- All checklist items complete
+
+**Phase 3 Unlocked:**
+- Phase 3 status: `in_progress`
+- Workers: [[Org Chart/ENG-BE/IDENTITY]] + [[Org Chart/ENG-FE/IDENTITY]]
+- Reviewer: [[Org Chart/CTO/IDENTITY]]
+- Focus: Setup fees ($199-$499), add-on restructuring, Stripe integration
+
+**Handoff:**
+- Triggering ENG-BE for backend Stripe work: `cron run pbb-eng-be-shift` — ⏱️ Gateway timeout (job still ran)
+- Triggering ENG-FE for frontend pricing display: `cron run pbb-eng-fe-shift` — ⏱️ Gateway timeout (job still ran)
+- Lock released: 2026-02-07T09:58:00Z
+- **Manual trigger available if needed:** Run `cron run pbb-eng-be-shift` and `cron run pbb-eng-fe-shift`
 
 ---
 
