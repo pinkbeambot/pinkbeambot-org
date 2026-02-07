@@ -91,6 +91,15 @@ blocks:              # Blocks these tasks
 is_active: false     # Set to true when CEO activates this task
 verified_by: ""      # CEO who verified completion
 
+# Phase Reviews (for multi-phase tasks with gates)
+phase_reviews:       # Gate between each phase
+  - phase: "Phase 1: Name"
+    worker: "[[Org Chart/ENG-FE/IDENTITY]]"
+    reviewer: "[[Org Chart/CMO/IDENTITY]]"
+    status: todo     # todo | pending_review | approved | rejected
+    submitted_at: ""
+    approved_at: ""
+
 # Categorization
 tags:
   - "backend"

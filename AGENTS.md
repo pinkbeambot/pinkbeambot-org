@@ -248,7 +248,102 @@ cron run pbb-{NEXT-ROLE}-shift
 
 ---
 
-**If task IS complete (100% of checklist checked):**
+### 5.4 Phase Review Protocol (Multi-Phase Tasks)
+
+**For tasks with multiple phases, each phase requires review before proceeding.**
+
+#### Phase Review Workflow
+
+```
+Worker completes phase → Set status to review → Assign to reviewer 
+→ Reviewer verifies → Approves or requests changes → Next phase begins
+```
+
+#### Step-by-Step
+
+**When you complete a phase:**
+
+1. **Update Work Log with phase completion:**
+   ```markdown
+   ### 2026-02-07 [[Org Chart/YOUR-ROLE/IDENTITY]] — PHASE X COMPLETE
+   **Phase:** [Phase Name]
+   **Completed:** [BE1], [BE2], [FE1], etc.
+   **Deliverables:** What was produced
+   **Ready for review by:** [[Org Chart/REVIEWER-ROLE/IDENTITY]]
+   ```
+
+2. **Set phase for review:**
+   ```yaml
+   status: review
+   current_worker: "[[Org Chart/REVIEWER-ROLE/IDENTITY]]"
+   next_worker: "[[Org Chart/REVIEWER-ROLE/IDENTITY]]"
+   ```
+
+3. **Update phase tracking in task:**
+   ```yaml
+   phase_reviews:
+     - phase: "Phase 1: Quick Wins"
+       worker: "[[Org Chart/ENG-FE/IDENTITY]]"
+       reviewer: "[[Org Chart/CMO/IDENTITY]]"
+       status: pending_review  # pending_review | approved | rejected
+       submitted_at: "2026-02-07T01:00:00Z"
+   ```
+
+4. **Trigger reviewer with retry protocol**
+
+5. **Release lock**
+
+#### Reviewer Responsibilities
+
+**As a reviewer, you must:**
+- Verify checklist items for the phase are complete
+- Check quality against IDENTITY.md standards
+- Ensure alignment with company goals
+- **Decision:**
+  - **Approve:** Update phase status to `approved`, trigger next worker
+  - **Reject:** Document specific issues, return to worker with feedback
+
+#### Review Decision Format
+
+**If approving:**
+```markdown
+### 2026-02-07 [[Org Chart/REVIEWER-ROLE/IDENTITY]] — PHASE X APPROVED
+**Reviewed:** [Phase Name]
+**Status:** ✅ APPROVED
+**Quality:** Meets standards
+**Next:** [[Org Chart/NEXT-WORKER/IDENTITY]] to begin Phase Y
+```
+
+**If rejecting:**
+```markdown
+### 2026-02-07 [[Org Chart/REVIEWER-ROLE/IDENTITY]] — PHASE X REJECTED
+**Reviewed:** [Phase Name]
+**Status:** ❌ REJECTED — needs revision
+**Issues:**
+1. Specific issue with example
+2. Another issue
+**Required changes:**
+- [ ] Fix issue 1
+- [ ] Fix issue 2
+**Return to:** [[Org Chart/WORKER-ROLE/IDENTITY]]
+```
+
+#### Default Reviewer Assignments
+
+| Type of Work | Worker | Default Reviewer |
+|--------------|--------|------------------|
+| Frontend code/copy | ENG-FE | CMO (copy/brand) or CTO (technical) |
+| Backend code | ENG-BE | CTO |
+| Design/messaging | ENG-FE/CMO | CMO |
+| Architecture decisions | CTO | CEO |
+| Business/pricing | Any | CEO |
+| Final launch | Any | CEO |
+
+**Note:** Check task's `phase_reviews` section for specific reviewer assignments.
+
+---
+
+**If task IS complete (100% of checklist checked):
 - Change `task.status: review`
 - Set `task.completed_at: "2026-02-07T00:30:00Z"`
 - Update `task.current_worker: "[[Org Chart/CEO/IDENTITY]]"`

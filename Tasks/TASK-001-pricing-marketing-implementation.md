@@ -20,6 +20,46 @@ dependencies: []
 blocks: []
 is_active: true
 verified_by: ""
+
+# Phase Reviews (gate between each phase)
+phase_reviews:
+  - phase: "Phase 1: Quick Wins — Copy Updates"
+    worker: "[[Org Chart/ENG-FE/IDENTITY]]"
+    reviewer: "[[Org Chart/CMO/IDENTITY]]"
+    status: pending_review
+    submitted_at: ""
+    approved_at: ""
+  - phase: "Phase 2: Content Expansion"
+    worker: "[[Org Chart/ENG-FE/IDENTITY]]"
+    reviewer: "[[Org Chart/CMO/IDENTITY]]"
+    status: todo
+    submitted_at: ""
+    approved_at: ""
+  - phase: "Phase 3: Pricing Structure Updates"
+    worker: "[[Org Chart/ENG-BE/IDENTITY]] + [[Org Chart/ENG-FE/IDENTITY]]"
+    reviewer: "[[Org Chart/CTO/IDENTITY]]"
+    status: todo
+    submitted_at: ""
+    approved_at: ""
+  - phase: "Phase 4: VALIS Section Rewrite"
+    worker: "[[Org Chart/ENG-FE/IDENTITY]]"
+    reviewer: "[[Org Chart/CMO/IDENTITY]]"
+    status: todo
+    submitted_at: ""
+    approved_at: ""
+  - phase: "Phase 5: Final Polish"
+    worker: "[[Org Chart/ENG-FE/IDENTITY]]"
+    reviewer: "[[Org Chart/CTO/IDENTITY]]"
+    status: todo
+    submitted_at: ""
+    approved_at: ""
+  - phase: "Phase 6: Review & Launch"
+    worker: "[[Org Chart/CMO/IDENTITY]] + [[Org Chart/CEO/IDENTITY]]"
+    reviewer: "[[Org Chart/CEO/IDENTITY]]"
+    status: todo
+    submitted_at: ""
+    approved_at: ""
+
 tags:
   - frontend
   - marketing
@@ -53,7 +93,18 @@ This task implements all approved changes from that strategy.
 
 ## ✅ Definition of Done
 
-### Phase 1: Quick Wins — Copy Updates (ENG-FE) ✅ COMPLETE
+### Phase 1: Quick Wins — Copy Updates (ENG-FE) ⏳ AWAITING REVIEW
+**Worker:** [[Org Chart/ENG-FE/IDENTITY]]  
+**Reviewer:** [[Org Chart/CMO/IDENTITY]]  
+**Status:** Complete, pending CMO review
+
+**Review Criteria:**
+- Copy matches CMO strategy document
+- Brand voice is consistent
+- CTAs are clear and compelling
+- Trust signals are visible
+
+**Phase 1 Checklist:**
 - [x] Update hero copy on home page
   - [x] Change from "The Web is Waking Up" to "Your Website Works While You Sleep"
   - [x] Add subhead: "AI-powered websites that answer customer questions, book appointments, and generate leads — automatically. No coding required."
@@ -70,7 +121,18 @@ This task implements all approved changes from that strategy.
   - [x] "30-Day Money-Back Guarantee" badge
   - [x] "Human Support When You Need It" badge
 
-### Phase 2: Content Expansion (ENG-FE)
+### Phase 2: Content Expansion (ENG-FE) 🔒 LOCKED
+**Worker:** [[Org Chart/ENG-FE/IDENTITY]]  
+**Reviewer:** [[Org Chart/CMO/IDENTITY]]  
+**Status:** Locked — Phase 1 must be reviewed first
+
+**Review Criteria:**
+- FAQ answers are clear and helpful
+- Testimonials section is well-designed
+- Meta descriptions include target keywords
+- Content aligns with brand voice
+
+**Phase 2 Checklist:**
 - [ ] Rewrite engines preview section on home page
   - [ ] Lead with problems solved, not engine names
   - [ ] Add icons for each capability
@@ -89,7 +151,18 @@ This task implements all approved changes from that strategy.
   - [ ] Pricing page: Lead with value + keyword
   - [ ] All engine pages: Update per strategy
 
-### Phase 3: Pricing Structure Updates (ENG-BE + ENG-FE)
+### Phase 3: Pricing Structure Updates (ENG-BE + ENG-FE) 🔒 LOCKED
+**Worker:** [[Org Chart/ENG-BE/IDENTITY]] + [[Org Chart/ENG-FE/IDENTITY]]  
+**Reviewer:** [[Org Chart/CTO/IDENTITY]]  
+**Status:** Locked — Phases 1-2 must be reviewed first
+
+**Review Criteria:**
+- Setup fees work correctly in Stripe
+- Add-on pricing is clear to users
+- No breaking changes to existing customers
+- Code passes technical review
+
+**Phase 3 Checklist:**
 - [ ] Add setup fees to pricing configuration
   - [ ] Signal: $199
   - [ ] Satellite: $299
@@ -113,7 +186,17 @@ This task implements all approved changes from that strategy.
     - [ ] Content Import: $199
 - [ ] Update Stripe products/prices to match new structure
 
-### Phase 4: VALIS Section Rewrite (ENG-FE)
+### Phase 4: VALIS Section Rewrite (ENG-FE) 🔒 LOCKED
+**Worker:** [[Org Chart/ENG-FE/IDENTITY]]  
+**Reviewer:** [[Org Chart/CMO/IDENTITY]]  
+**Status:** Locked — Phases 1-3 must be reviewed first
+
+**Review Criteria:**
+- Messaging is compelling
+- VALIS concept is clear but not overwhelming
+- Business value is front and center
+
+**Phase 4 Checklist:**
 - [ ] Rewrite "Meet Your Digital Employee" section
 - [ ] Lead with business transformation angle
 - [ ] Keep VALIS as underlying tech story
@@ -125,7 +208,19 @@ This task implements all approved changes from that strategy.
   - [ ] Never takes a day off
 - [ ] Add closing line: "Think of it as hiring a digital employee for the price of software."
 
-### Phase 5: Final Polish (ENG-FE)
+### Phase 5: Final Polish (ENG-FE) 🔒 LOCKED
+**Worker:** [[Org Chart/ENG-FE/IDENTITY]]  
+**Reviewer:** [[Org Chart/CTO/IDENTITY]]  
+**Status:** Locked — Phases 1-4 must be reviewed first
+
+**Review Criteria:**
+- Code quality meets standards
+- All CTAs are consistent
+- Mobile responsive
+- Performance acceptable
+- No broken links
+
+**Phase 5 Checklist:**
 - [ ] Update CTA buttons sitewide
   - [ ] "Explore Engines" → "See What It Can Do"
   - [ ] "See Pricing" → "View Plans"
@@ -135,15 +230,23 @@ This task implements all approved changes from that strategy.
 - [ ] Verify all links work
 - [ ] Check page load performance after changes
 
-### Phase 6: CEO Review & Launch
+### Phase 6: CEO Review & Launch 🔒 LOCKED
+**Worker:** [[Org Chart/CMO/IDENTITY]] + [[Org Chart/CEO/IDENTITY]]  
+**Reviewer:** [[Org Chart/CEO/IDENTITY]]  
+**Status:** Locked — All previous phases must be reviewed first
+
+**Review Criteria:**
+- All phases completed and approved
+- CMO verifies strategy implementation
+- CEO verifies business goals met
+- FOUNDER approves launch
+
+**Phase 6 Checklist:**
 - [ ] CMO reviews all changes against strategy doc
 - [ ] CEO reviews implementation
 - [ ] @FOUNDER approval for launch
 - [ ] Deploy to production
 - [ ] Monitor conversion metrics
-
----
-
 ## 📝 Work Log
 
 ### 2026-02-07 [[Org Chart/CEO/IDENTITY]]
